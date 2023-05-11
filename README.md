@@ -23,8 +23,6 @@ Following dependencies are needed for the Caustic_Designer:<br>
 
  *  cmake
  *  libqt4-dev (needs to be tested)
- *  libcgal-dev
- *  libcgal-qt4-dev (needs to be tested, too)
  *  libblas-dev
  *  liblapack-dev
  *  libtbb-dev
@@ -33,15 +31,32 @@ Following dependencies are needed for the Caustic_Designer:<br>
  *  liblbfgs-dev
  *  libtinyxml-dev
 
-Debian dependencies as one-liner:<br>
-`sudo apt-get install cmake libqt4-dev libcgal-dev libcgal-qt4-dev libblas-dev liblapack-dev libtbb-dev libmetis-dev libsuitesparse-dev liblbfgs-dev libtinyxml-dev`
+###Debian dependencies:<br>
+`sudo add-apt-repository ppa:rock-core/qt4`
+`sudo apt-get install cmake libqt4-dev libblas-dev liblapack-dev libtbb-dev libmetis-dev build-essential libsuitesparse-dev liblbfgs-dev libtinyxml-dev libgmp3-dev libmpc-dev libboost-all-dev checkinstall`
+
+install CGAL 4.9.1:
+`mkdir ~/source`
+`cd ~/source`
+`wget https://github.com/CGAL/cgal/releases/download/releases%2FCGAL-4.9.1/CGAL-4.9.1.tar.xz`
+`tar -xf CGAL-4.9.1.tar.xz`
+`cd build-CGAL-4.9.1`
+`cmake ../CGAL-4.9.1`
+`make`
+`sudo checkinstall`
+
 
 ## Build
-
 We suggest using cmake to build the project. To do so, simple:
 
  1.  Create Build Directory (e.g. `mkdir build-Caustic_Design`)
  2.  Run cmake in the build directory (e.g. `cd build-Caustic_Design && cmake ../Caustic_Design/`)
+ 
+ Check for the existence of the dynamic library path environment variable(LD_LIBRARY_PATH)
+`echo $LD_LIBRARY_PATH`
+
+If there is nothing to be displayed, add a default path value (or not if you wish to)
+`LD_LIBRARY_PATH=/usr/local/lib`
 
 
 You may also use qmake instead of cmake if you prefer qmake. But in the current version, suitesparse does not seem to be set correctly when installing it via `apt-get`.

@@ -26,7 +26,7 @@ glm::vec3 proj(glm::vec3 xs, glm::vec3 di, glm::vec3 pos){
     return result;
 }
 
-float* matrixProduct(array* L, float* X){
+float* matrixProduct(n_array* L, float* X){
     float* R = new float[NORMALS];
     for(int i=0; i<NORMALS; i++){
         for(int j=0; j<NORMALS; j++)
@@ -35,7 +35,7 @@ float* matrixProduct(array* L, float* X){
     return R;
 }
 
-void printMatrix(array* X){
+void printMatrix(n_array* X){
     for(int i=0; i<NORMALS; i++){
         std::cout<<"| "<<std::flush;
         for(int j=0; j<NORMALS; j++)

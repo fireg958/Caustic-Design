@@ -194,11 +194,7 @@ template<typename T> void evaluateReg(const T** const allVertices, const float* 
     }
 
     for (uint i=0; i<3; i++)
-<<<<<<< HEAD
-        res[i] = abs(res[i]) /* res[i] */* T(EREG_WEIGHT);
-=======
         res[i] = res[i] * T(EREG_WEIGHT);
->>>>>>> cleanup
 }
 
 
@@ -806,7 +802,7 @@ public:
         T dth = T(EBAR_DETH);
 
         T distance = vertex[0] - T(receiverPosition->x);
-        e[0] = T(EBAR_WEIGHT) * ceres::max(T(0), - ceres::log( (T(1)-distance) + dth) );
+        e[0] = T(EBAR_WEIGHT) * ceres::fmax(T(0), - ceres::log( (T(1)-distance) + dth) );
 
         return true;
     }
