@@ -147,7 +147,7 @@ Debian dependencies as one-liner:<br>
 - When it is finished, it will ask you to save the interpolated point set (.dat), this file will be used to generate the caustic surface in the next step.
 
 ## Generate the Caustic Surface
-- Open a new instance of the Target_Surface program and load your model again, then click on `File -> Load Light-Ray Receiver Position` open the .dat file from the interpolation step, if you then rotate the view, you should see your caustic image apear on the plane. if this is the case, change your desired focal length and click `Algorithm -> Run Target Optimization`. This will modify the surface of the model so it will project the caustic image. This will take a while depending on how easy it is to solve the surface hightmap.
+- Open a new instance of the Target_Surface program and load your model again, then click on `File -> Load Light-Ray Receiver Position` open the .dat file from the interpolation step, if you then rotate the view, you should see your caustic image apear on the plane. if this is the case, change your desired focal length (or leave it at 40cm), and click `Algorithm -> Run Target Optimization`. This will modify the surface of the model so it will project the caustic image. This will take a while depending on how easy it is to solve the surface hightmap.
 - When the surface solver is done, you can export the model by clicking `File -> Save Model`, save the file as .stl
 - ?
 - Profit
