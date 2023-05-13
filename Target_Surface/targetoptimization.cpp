@@ -98,7 +98,8 @@ void TargetOptimization::addResidualBlocks(Problem *problem, uint vertexIndex, v
 {
 
     // EBar only calculates the distance from the vertex to the receiver-plane. So passing x-coordiate of receiving plane is sufficient
-    glm::vec3 receiverPos = glm::vec3(model->meshes[0].getMaxX() + model->getFocalLength(), 0, 0);
+    //glm::vec3 receiverPos = glm::vec3(model->meshes[0].getMaxX() + model->getFocalLength(), 0, 0);
+    glm::vec3 receiverPos = model->getFocalPlanePos();
     CostFunction* cost_function_ebar =
             new AutoDiffCostFunction<CostFunctorEbar2, 1, 3>(new CostFunctorEbar2(&receiverPos));
 

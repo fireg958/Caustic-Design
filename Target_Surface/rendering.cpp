@@ -263,13 +263,14 @@ void ModelRendering::paintReceiver()
     if(!light_pos.empty())
     {
         float surfaceSize = model.surfaceSize;
-        float f = model.getFocalLength() + model.meshes[0].getMaxX();
+        //float f = model.getFocalLength() + model.meshes[0].getMaxX();
+        glm::vec3 pos = getFocalPlanePos();
         glBegin(GL_QUADS);
             glColor3f(1,1,1);
-            glVertex3f(f, -surfaceSize, -surfaceSize);
-            glVertex3f(f, -surfaceSize, surfaceSize);
-            glVertex3f(f, surfaceSize, surfaceSize);
-            glVertex3f(f, surfaceSize, -surfaceSize);
+            glVertex3f(pos.x, -surfaceSize + pos.y, -surfaceSize + pos.z);
+            glVertex3f(pos.x, -surfaceSize + pos.y,  surfaceSize + pos.z);
+            glVertex3f(pos.x,  surfaceSize + pos.y,  surfaceSize + pos.z);
+            glVertex3f(pos.x,  surfaceSize + pos.y, -surfaceSize + pos.z);
         glEnd();
     }
 }

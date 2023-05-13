@@ -34,6 +34,7 @@ class Model {
         void exportModel(std::string filename);
         vector<glm::vec3> getLightRayPositions(){ return receiverLightPositions; }
         float getFocalLength() { return focalLength; }
+        glm::vec3 getFocalPlanePos() { return targetPlanePosition; }
         void setFocalLength(float newLength);
         void rescaleMeshes(float newScale);
         void modifyMesh();
@@ -55,6 +56,8 @@ class Model {
         aiScene* scene;
         float focalLength;
 
+        glm::vec3 targetPlanePosition;
+        glm::vec3 targetPlaneRotation;
 
         Mesh SurfaceMesh;
         //Mesh mesh;

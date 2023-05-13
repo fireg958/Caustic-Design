@@ -19,12 +19,28 @@ Model::Model(GLchar* path){
     //this->loadModel(path);
     this->focalLength = 40;
     this->surfaceSize = 5;
+
+    this->targetPlanePosition.x = 40.0f;
+    this->targetPlanePosition.y = 0.0f;
+    this->targetPlanePosition.z = 0.0f;
+
+    this->targetPlaneRotation.x = 0.0f;
+    this->targetPlaneRotation.y = 0.0f;
+    this->targetPlaneRotation.z = 0.0f;
 }
 
 Model::Model()
 {
     this->focalLength = 40;
     this->surfaceSize = 5;
+
+    this->targetPlanePosition.x = 40.0f;
+    this->targetPlanePosition.y = 0.0f;
+    this->targetPlanePosition.z = 0.0f;
+
+    this->targetPlaneRotation.x = 0.0f;
+    this->targetPlaneRotation.y = 0.0f;
+    this->targetPlaneRotation.z = 0.0f;
 }
 
 void Model::exportModel(std::string filename)
@@ -122,9 +138,17 @@ void Model::loadReceiverLightPoints(QString path)
     std::ifstream ifs(qPrintable(path));
     float y,z;
 
-    while(ifs >> y >> z) receiverLightPositions.push_back(glm::vec3(focalLength + meshes[0].getMaxX(), y*surfaceSize/CAUSTIC_DOMAIN, z*surfaceSize/CAUSTIC_DOMAIN));
+    // while(ifs >> y >> z) receiverLightPositions.push_back(glm::vec3(focalLength + meshes[0].getMaxX(), y*surfaceSize/CAUSTIC_DOMAIN, z*surfaceSize/CAUSTIC_DOMAIN));
+    while(ifs >> y >> z) receiverLightPositions.push_back(
+                                                glm::vec3(targetPlanePosition.x, 
+                                                y*surfaceSize/CAUSTIC_DOMAIN + targetPlanePosition.y, 
+                                                z*surfaceSize/CAUSTIC_DOMAIN) + targetPlanePosition.z);
 
-    std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal length " << focalLength << std::endl;
+    //std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal length " << focalLength << std::endl;
+    std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal plant at (" 
+                                                << targetPlanePosition.x << ", " 
+                                                << targetPlanePosition.y << ", " 
+                                                << targetPlanePosition.z << ")" << std::endl;
 
     //calculate and load the desired normals
     computeLightDirectionsScreenSurface();
@@ -320,6 +344,11 @@ void Model::setFocalLength(float newLength)
     }
 }
 
+void Model::setFocalPlanePos(glm::vec3 pos)
+{
+    this->targetPlanePosition = pos;
+}
+
 void loadToSurface(int index){
 //    double m_dx, m_dy;
 //    bool ok = m_image.load(filename);
@@ -422,7 +451,7 @@ void Model::computeLightDirectionsScreenSurface(){
 //             vecNorm = meshes[0].faceVerticesEdge[i]->Normal;
 //             std::cout<<"load edge: "<<i<<std::endl;
 //         }
-        vecNorm = receiverLightPositions[i] - meshes[0].faceVertices[i]->Position ;
+        vecNorm = (receiverLightPositions[i] - meshes[0].faceVertices[i]->Position) + targetPlanePosition;
         screenDirections.push_back(glm::normalize(vecNorm));
     }
 }
@@ -434,10 +463,17 @@ void Model::fresnelMapping(){
     desiredNormals.clear();
     int j;
     for(int i = 0; i<meshes[0].faceVertices.size(); i++){
+
         glm::vec3 incidentLight;
         incidentLight.x = -1;
         incidentLight.y = 0;
         incidentLight.z = 0;
+
+        /// TODO: Implement reflective caustics: n = (d + r) / (2 * ||d + r||)
+        //incidentLight.x = 1.0f;
+        //glm::vec3 sum = (incidentLight + screenDirections);
+        //glm::vec3 norm = sum / (2.0f * (sum.length()));
+        //desiredNormals.push_back(glm::normalize(norm)*-1.0f);
 
         glm::vec3 vert = screenDirections[i]/refraction;
         //vert *= refraction;

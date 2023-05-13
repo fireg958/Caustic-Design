@@ -11,3 +11,5 @@
 
 # qt-creator user files
 **/*creator.user
+
+.vscode
