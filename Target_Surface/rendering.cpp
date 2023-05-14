@@ -264,7 +264,7 @@ void ModelRendering::paintReceiver()
     {
         float surfaceSize = model.surfaceSize;
         //float f = model.getFocalLength() + model.meshes[0].getMaxX();
-        glm::vec3 pos = getFocalPlanePos();
+        glm::vec3 pos = model.getFocalPlanePos();
         glBegin(GL_QUADS);
             glColor3f(1,1,1);
             glVertex3f(pos.x, -surfaceSize + pos.y, -surfaceSize + pos.z);
@@ -328,11 +328,13 @@ void ModelRendering::paintDesiredRays()
     glBegin(GL_LINES);
     glColor3f(0, 1, 0);
 
+    vector<glm::vec3> lrp = model.getLightRayPositions();
+
     Mesh m = model.meshes[0];
     for (uint i=0; i<model.meshes[0].faceVertices.size(); i++)
     {
         glVertex3f(m.faceVertices[i]->Position.x, m.faceVertices[i]->Position.y, m.faceVertices[i]->Position.z);
-        glVertex3f(model.receiverLightPositions[i].x, model.receiverLightPositions[i].y, model.receiverLightPositions[i].z);
+        glVertex3f(lrp[i].x, lrp[i].y, lrp[i].z);
     }
     glEnd();
 }

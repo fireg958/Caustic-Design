@@ -17,7 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
     setupUi(this);
 
     connect(meshHeightLineEdit, SIGNAL(returnPressed()), this, SLOT(newMeshHeight()));
-    connect(focalLengthLineEdit, SIGNAL(returnPressed()), this, SLOT(newFocalLength()));
+    //connect(focalLengthLineEdit, SIGNAL(returnPressed()), this, SLOT(newFocalLength()));
+
+    connect(focalLengthLineEditX, SIGNAL(returnPressed()), this, SLOT(newFocalPlanePosX()));
+    connect(focalLengthLineEditY, SIGNAL(returnPressed()), this, SLOT(newFocalPlanePosY()));
+    connect(focalLengthLineEditZ, SIGNAL(returnPressed()), this, SLOT(newFocalPlanePosZ()));
 
     //setModel();
     //viewer = new Renderer(5, this, "Target Surface");
@@ -131,21 +135,52 @@ void MainWindow::newMeshHeight()
     viewer->update();
 }
 
-void MainWindow::newFocalLength()
+void MainWindow::newFocalPlanePosX()
 {
-    std::string txt = focalLengthLineEdit->text().toStdString();
+    std::string txt = focalLengthLineEditX->text().toStdString();
     bool ok;
 
-    float newLength = focalLengthLineEdit->text().toFloat(&ok);
+    float newLength = focalLengthLineEditX->text().toFloat(&ok);
     if(!ok)
     {
         std::cerr << "illegal value" << std::endl;
         return;
     }
 
-    viewer->model.setFocalLength(newLength);
+    viewer->model.setFocalPlanePosX(newLength);
     viewer->sceneUpdate();
+}
 
+void MainWindow::newFocalPlanePosY()
+{
+    std::string txt = focalLengthLineEditY->text().toStdString();
+    bool ok;
+
+    float newLength = focalLengthLineEditY->text().toFloat(&ok);
+    if(!ok)
+    {
+        std::cerr << "illegal value" << std::endl;
+        return;
+    }
+
+    viewer->model.setFocalPlanePosY(newLength);
+    viewer->sceneUpdate();
+}
+
+void MainWindow::newFocalPlanePosZ()
+{
+    std::string txt = focalLengthLineEditZ->text().toStdString();
+    bool ok;
+
+    float newLength = focalLengthLineEditZ->text().toFloat(&ok);
+    if(!ok)
+    {
+        std::cerr << "illegal value" << std::endl;
+        return;
+    }
+
+    viewer->model.setFocalPlanePosZ(newLength);
+    viewer->sceneUpdate();
 }
 
 void MainWindow::on_actionShoot_Ray_toggled(){

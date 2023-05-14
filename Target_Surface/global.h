@@ -29,7 +29,6 @@
 #define MATERIAL_REFRACTIV_INDEX 1.49//value for acrylic used in the paper to do test experimently
 #define NORMALS 961 //size of vertex in the front face 961 without the edges 1089 with edges
 
-
 /**/
 #define CONVERGENCE_LIMIT 9e-2001
 #define AIR_REFRACTIV_INDEX 1

@@ -32,9 +32,14 @@ class Model {
         int findSurfaceMesh();
         void printAllVertices();
         void exportModel(std::string filename);
-        vector<glm::vec3> getLightRayPositions(){ return receiverLightPositions; }
+        vector<glm::vec3> getLightRayPositions();
         float getFocalLength() { return focalLength; }
         glm::vec3 getFocalPlanePos() { return targetPlanePosition; }
+
+        void setFocalPlanePosX(float x);
+        void setFocalPlanePosY(float y);
+        void setFocalPlanePosZ(float z);
+
         void setFocalLength(float newLength);
         void rescaleMeshes(float newScale);
         void modifyMesh();

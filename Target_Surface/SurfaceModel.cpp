@@ -140,9 +140,9 @@ void Model::loadReceiverLightPoints(QString path)
 
     // while(ifs >> y >> z) receiverLightPositions.push_back(glm::vec3(focalLength + meshes[0].getMaxX(), y*surfaceSize/CAUSTIC_DOMAIN, z*surfaceSize/CAUSTIC_DOMAIN));
     while(ifs >> y >> z) receiverLightPositions.push_back(
-                                                glm::vec3(targetPlanePosition.x, 
-                                                y*surfaceSize/CAUSTIC_DOMAIN + targetPlanePosition.y, 
-                                                z*surfaceSize/CAUSTIC_DOMAIN) + targetPlanePosition.z);
+                                                glm::vec3(0, 
+                                                y*surfaceSize/CAUSTIC_DOMAIN, 
+                                                z*surfaceSize/CAUSTIC_DOMAIN));
 
     //std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal length " << focalLength << std::endl;
     std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal plant at (" 
@@ -329,6 +329,9 @@ void Model::shootRay(vector<glm::highp_dvec3> & direction, vector<glm::highp_dve
         //std::cerr << refractedRay.x << ", " << refractedRay.y << ", " << refractedRay.z << std::endl;
 
         glm::highp_dvec3 ed = double(1.5*getFocalLength()) * refractedRay + redi;
+        //ed.x = ed.x + targetPlanePosition.x;
+        //ed.y = ed.y + targetPlanePosition.y;
+        //ed.z = ed.z + targetPlanePosition.z;
         endpoint.push_back(ed);
         //std::cerr << endpoint.x << ", " << endpoint.y << ", " << endpoint.z << std::endl;
     }
@@ -344,10 +347,9 @@ void Model::setFocalLength(float newLength)
     }
 }
 
-void Model::setFocalPlanePos(glm::vec3 pos)
-{
-    this->targetPlanePosition = pos;
-}
+void Model::setFocalPlanePosX(float x) {this->targetPlanePosition.x = x;}
+void Model::setFocalPlanePosY(float y) {this->targetPlanePosition.y = y;}
+void Model::setFocalPlanePosZ(float z) {this->targetPlanePosition.z = z;}
 
 void loadToSurface(int index){
 //    double m_dx, m_dy;
@@ -451,7 +453,8 @@ void Model::computeLightDirectionsScreenSurface(){
 //             vecNorm = meshes[0].faceVerticesEdge[i]->Normal;
 //             std::cout<<"load edge: "<<i<<std::endl;
 //         }
-        vecNorm = (receiverLightPositions[i] - meshes[0].faceVertices[i]->Position) + targetPlanePosition;
+        vecNorm = ((receiverLightPositions[i] + targetPlanePosition) - meshes[0].faceVertices[i]->Position);
+        //vecNorm = vecNorm + targetPlanePosition
         screenDirections.push_back(glm::normalize(vecNorm));
     }
 }
@@ -488,4 +491,12 @@ void Model::fresnelMapping(){
 
 
     }
+}
+
+vector<glm::vec3> Model::getLightRayPositions() {
+    vector<glm::vec3> translated;
+    for (int i=0; i<receiverLightPositions.size(); i++) {
+        translated.push_back(receiverLightPositions[i] + this->targetPlanePosition);
+    }
+    return translated;
 }

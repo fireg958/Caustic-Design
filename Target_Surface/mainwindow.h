@@ -44,7 +44,11 @@ protected slots:
     void on_actionAxis_toggled();
     /* line edit slots */
     void newMeshHeight();
-    void newFocalLength();
+    //void newFocalLength();
+
+    void newFocalPlanePosX();
+    void newFocalPlanePosY();
+    void newFocalPlanePosZ();
 
     //void on_actionCreate_Object_triggered();
 };
