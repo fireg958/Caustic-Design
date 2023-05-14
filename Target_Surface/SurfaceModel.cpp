@@ -351,6 +351,15 @@ void Model::setFocalPlanePosX(float x) {this->targetPlanePosition.x = x;}
 void Model::setFocalPlanePosY(float y) {this->targetPlanePosition.y = y;}
 void Model::setFocalPlanePosZ(float z) {this->targetPlanePosition.z = z;}
 
+void Model::setFocalPlaneRotY(float y) {this->targetPlaneRotation.y = y;}
+void Model::setFocalPlaneRotZ(float z) {this->targetPlaneRotation.z = z;}
+
+void Model::updateTargetPlaneRotationMatrix() 
+{
+    //targetPlaneRotationQuaternion = glm::quat(eulerAngles);
+    targetPlaneRotationQuaternion = glm::quat(targetPlaneRotation);
+}
+
 void loadToSurface(int index){
 //    double m_dx, m_dy;
 //    bool ok = m_image.load(filename);
@@ -453,7 +462,7 @@ void Model::computeLightDirectionsScreenSurface(){
 //             vecNorm = meshes[0].faceVerticesEdge[i]->Normal;
 //             std::cout<<"load edge: "<<i<<std::endl;
 //         }
-        vecNorm = ((receiverLightPositions[i] + targetPlanePosition) - meshes[0].faceVertices[i]->Position);
+        vecNorm = ((receiverLightPositions[i]*targetPlaneRotationQuaternion + targetPlanePosition) - meshes[0].faceVertices[i]->Position);
         //vecNorm = vecNorm + targetPlanePosition
         screenDirections.push_back(glm::normalize(vecNorm));
     }
@@ -496,7 +505,7 @@ void Model::fresnelMapping(){
 vector<glm::vec3> Model::getLightRayPositions() {
     vector<glm::vec3> translated;
     for (int i=0; i<receiverLightPositions.size(); i++) {
-        translated.push_back(receiverLightPositions[i] + this->targetPlanePosition);
+        translated.push_back(receiverLightPositions[i]*this->targetPlaneRotationQuaternion + this->targetPlanePosition);
     }
     return translated;
 }

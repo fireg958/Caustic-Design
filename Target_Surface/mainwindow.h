@@ -50,6 +50,9 @@ protected slots:
     void newFocalPlanePosY();
     void newFocalPlanePosZ();
 
+    void newFocalPlaneRotY();
+    void newFocalPlaneRotZ();
+
     //void on_actionCreate_Object_triggered();
 };
 

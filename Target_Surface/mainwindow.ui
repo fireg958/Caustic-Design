@@ -50,10 +50,11 @@
           </property>
          </widget>
         </item>
+
         <item row="1" column="0">
          <widget class="QLabel" name="focY">
           <property name="text">
-           <string>Focal Plane Pos X (cm)</string>
+           <string>Focal Plane Pos Y (cm)</string>
           </property>
          </widget>
         </item>
@@ -64,10 +65,11 @@
           </property>
          </widget>
         </item>
+
         <item row="2" column="0">
          <widget class="QLabel" name="focZ">
           <property name="text">
-           <string>Focal Plane Pos X (cm)</string>
+           <string>Focal Plane Pos Z (cm)</string>
           </property>
          </widget>
         </item>
@@ -78,28 +80,60 @@
           </property>
          </widget>
         </item>
+
         <item row="3" column="0">
+         <widget class="QLabel" name="focRY">
+          <property name="text">
+           <string>Focal Plane Rot Y (deg)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="focalLengthLineEditRY">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+
+        <item row="4" column="0">
+         <widget class="QLabel" name="focRZ">
+          <property name="text">
+           <string>Focal Plane Rot Z (deg)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="focalLengthLineEditRZ">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+
+        <item row="5" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Mesh Height (cm)</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="5" column="1">
          <widget class="QLineEdit" name="meshHeightLineEdit">
           <property name="text">
            <string>10</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+
+        <item row="6" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Mesh Width (cm)</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="6" column="1">
          <widget class="QLineEdit" name="meshWidthLineEdit">
           <property name="enabled">
            <bool>false</bool>
@@ -109,6 +143,7 @@
           </property>
          </widget>
         </item>
+
        </layout>
       </item>
      </layout>

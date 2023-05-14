@@ -34,11 +34,17 @@ class Model {
         void exportModel(std::string filename);
         vector<glm::vec3> getLightRayPositions();
         float getFocalLength() { return focalLength; }
-        glm::vec3 getFocalPlanePos() { return targetPlanePosition; }
+        glm::vec3 getFocalPlanePos() { return this->targetPlanePosition; }
+        glm::quat getFocalPlaneQuat() { return this->targetPlaneRotationQuaternion; }
 
         void setFocalPlanePosX(float x);
         void setFocalPlanePosY(float y);
         void setFocalPlanePosZ(float z);
+
+        void setFocalPlaneRotY(float y);
+        void setFocalPlaneRotZ(float y);
+
+        void updateTargetPlaneRotationMatrix();
 
         void setFocalLength(float newLength);
         void rescaleMeshes(float newScale);
@@ -63,6 +69,8 @@ class Model {
 
         glm::vec3 targetPlanePosition;
         glm::vec3 targetPlaneRotation;
+
+        glm::quat targetPlaneRotationQuaternion;
 
         Mesh SurfaceMesh;
         //Mesh mesh;

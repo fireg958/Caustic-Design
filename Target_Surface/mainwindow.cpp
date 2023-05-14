@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(focalLengthLineEditY, SIGNAL(returnPressed()), this, SLOT(newFocalPlanePosY()));
     connect(focalLengthLineEditZ, SIGNAL(returnPressed()), this, SLOT(newFocalPlanePosZ()));
 
+    connect(focalLengthLineEditRY, SIGNAL(returnPressed()), this, SLOT(newFocalPlaneRotY()));
+    connect(focalLengthLineEditRZ, SIGNAL(returnPressed()), this, SLOT(newFocalPlaneRotZ()));
+
     //setModel();
     //viewer = new Renderer(5, this, "Target Surface");
     optimizer = new TargetOptimization();
@@ -180,6 +183,40 @@ void MainWindow::newFocalPlanePosZ()
     }
 
     viewer->model.setFocalPlanePosZ(newLength);
+    viewer->sceneUpdate();
+}
+
+void MainWindow::newFocalPlaneRotY() 
+{
+    std::string txt = focalLengthLineEditRY->text().toStdString();
+    bool ok;
+
+    float newLength = focalLengthLineEditRY->text().toFloat(&ok);
+    if(!ok)
+    {
+        std::cerr << "illegal value" << std::endl;
+        return;
+    }
+
+    viewer->model.setFocalPlaneRotY(newLength * (3.14159265f/180.0f));
+    viewer->model.updateTargetPlaneRotationMatrix();
+    viewer->sceneUpdate();
+}
+
+void MainWindow::newFocalPlaneRotZ()
+{
+    std::string txt = focalLengthLineEditRZ->text().toStdString();
+    bool ok;
+
+    float newLength = focalLengthLineEditRZ->text().toFloat(&ok);
+    if(!ok)
+    {
+        std::cerr << "illegal value" << std::endl;
+        return;
+    }
+
+    viewer->model.setFocalPlaneRotZ(newLength * (3.14159265f/180.0f));
+    viewer->model.updateTargetPlaneRotationMatrix();
     viewer->sceneUpdate();
 }
 
