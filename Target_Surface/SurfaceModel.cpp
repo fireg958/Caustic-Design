@@ -17,7 +17,6 @@
 
 Model::Model(GLchar* path){
     //this->loadModel(path);
-    this->focalLength = 40;
     this->surfaceSize = 5;
 
     this->targetPlanePosition.x = 40.0f;
@@ -31,7 +30,6 @@ Model::Model(GLchar* path){
 
 Model::Model()
 {
-    this->focalLength = 40;
     this->surfaceSize = 5;
 
     this->targetPlanePosition.x = 40.0f;
@@ -138,13 +136,11 @@ void Model::loadReceiverLightPoints(QString path)
     std::ifstream ifs(qPrintable(path));
     float y,z;
 
-    // while(ifs >> y >> z) receiverLightPositions.push_back(glm::vec3(focalLength + meshes[0].getMaxX(), y*surfaceSize/CAUSTIC_DOMAIN, z*surfaceSize/CAUSTIC_DOMAIN));
     while(ifs >> y >> z) receiverLightPositions.push_back(
                                                 glm::vec3(0, 
                                                 y*surfaceSize/CAUSTIC_DOMAIN, 
                                                 z*surfaceSize/CAUSTIC_DOMAIN));
 
-    //std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal length " << focalLength << std::endl;
     std::cout << "Loaded " << receiverLightPositions.size() << " light positions for focal plant at (" 
                                                 << targetPlanePosition.x << ", " 
                                                 << targetPlanePosition.y << ", " 
@@ -328,22 +324,9 @@ void Model::shootRay(vector<glm::highp_dvec3> & direction, vector<glm::highp_dve
 
         //std::cerr << refractedRay.x << ", " << refractedRay.y << ", " << refractedRay.z << std::endl;
 
-        glm::highp_dvec3 ed = double(1.5*getFocalLength()) * refractedRay + redi;
-        //ed.x = ed.x + targetPlanePosition.x;
-        //ed.y = ed.y + targetPlanePosition.y;
-        //ed.z = ed.z + targetPlanePosition.z;
+        glm::highp_dvec3 ed = double(1.5*targetPlanePosition.length()) * refractedRay + redi;
         endpoint.push_back(ed);
         //std::cerr << endpoint.x << ", " << endpoint.y << ", " << endpoint.z << std::endl;
-    }
-}
-
-void Model::setFocalLength(float newLength)
-{
-    this->focalLength = newLength;
-
-    for (uint i=0; i<receiverLightPositions.size(); i++)
-    {
-        receiverLightPositions[i].x = newLength + meshes[0].getMaxX();
     }
 }
 
@@ -356,7 +339,6 @@ void Model::setFocalPlaneRotZ(float z) {this->targetPlaneRotation.z = z;}
 
 void Model::updateTargetPlaneRotationMatrix() 
 {
-    //targetPlaneRotationQuaternion = glm::quat(eulerAngles);
     targetPlaneRotationQuaternion = glm::quat(targetPlaneRotation);
 }
 
@@ -468,37 +450,34 @@ void Model::computeLightDirectionsScreenSurface(){
     }
 }
 
+// n = (d + r) / ||d + r||
+glm::vec3 calculateReflectiveSurfaceNormal(const glm::vec3& incidentRayNormal, const glm::vec3& reflectedRayNormal) {
+    // Calculate the normal vector of the plane as the normalized sum of incident and reflected ray normals
+    glm::vec3 planeNormal = glm::normalize(incidentRayNormal + reflectedRayNormal);
+
+    return planeNormal;
+}
+
 //compute the desired normals
 void Model::fresnelMapping(){
-    //calculate sin(i1)/sin(i2)
     float refraction = MATERIAL_REFRACTIV_INDEX;
     desiredNormals.clear();
     int j;
     for(int i = 0; i<meshes[0].faceVertices.size(); i++){
 
         glm::vec3 incidentLight;
-        incidentLight.x = -1;
-        incidentLight.y = 0;
-        incidentLight.z = 0;
+        incidentLight.x = INCIDENT_RAY_X;
+        incidentLight.y = INCIDENT_RAY_Y;
+        incidentLight.z = INCIDENT_RAY_Z;
 
-        /// TODO: Implement reflective caustics: n = (d + r) / (2 * ||d + r||)
-        //incidentLight.x = 1.0f;
-        //glm::vec3 sum = (incidentLight + screenDirections);
-        //glm::vec3 norm = sum / (2.0f * (sum.length()));
-        //desiredNormals.push_back(glm::normalize(norm)*-1.0f);
-
-        glm::vec3 vert = screenDirections[i]/refraction;
-        //vert *= refraction;
-        glm::vec3 norm;
-
-        //normal of the surface see Kiser and Pauly
-        //norm = (incidentLight +  (1/refraction)*vert)/(glm::length(incidentLight+(1/refraction)*vert));
-        norm = (incidentLight + vert);
-        //norm = (incidentLight + refraction*vert);
-        desiredNormals.push_back(glm::normalize(norm)*-1.0f);
-        //desiredNormals.push_back(glm::normalize(norm)*-1.0f);
-
-
+        if (REFLECTIVE_CAUSTICS) {
+            glm::vec3 norm = glm::normalize(screenDirections[i] + incidentLight);
+            desiredNormals.push_back(norm);
+        } else {
+            //calculate sin(i1)/sin(i2)
+            glm::vec3 norm = glm::normalize(screenDirections[i]/refraction + incidentLight)*-1.0f;
+            desiredNormals.push_back(norm);
+        }
     }
 }
 

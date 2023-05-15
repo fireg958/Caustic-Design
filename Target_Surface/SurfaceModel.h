@@ -33,7 +33,6 @@ class Model {
         void printAllVertices();
         void exportModel(std::string filename);
         vector<glm::vec3> getLightRayPositions();
-        float getFocalLength() { return focalLength; }
         glm::vec3 getFocalPlanePos() { return this->targetPlanePosition; }
         glm::quat getFocalPlaneQuat() { return this->targetPlaneRotationQuaternion; }
 
@@ -46,7 +45,6 @@ class Model {
 
         void updateTargetPlaneRotationMatrix();
 
-        void setFocalLength(float newLength);
         void rescaleMeshes(float newScale);
         void modifyMesh();
         void shootRay(vector<glm::highp_dvec3> & direction, vector<glm::highp_dvec3> & redirect, vector<glm::highp_dvec3> & endpoint);

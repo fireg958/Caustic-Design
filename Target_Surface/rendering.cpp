@@ -17,7 +17,7 @@
 #include <iostream>
 
 Renderer::Renderer(QWidget *parent):QGLWidget(parent){
-    y_rotate = 0.0f;
+    z_rotate = 0.0f;
     mouse_is_down = false;
 }
 
@@ -34,7 +34,7 @@ Renderer::Renderer(int framesPerSecond, QWidget *parent , char *name):QGLWidget(
           t_Timer->start( timerInterval );
       }
 
-      y_rotate = 0.0f;
+      z_rotate = 0.0f;
       mouse_is_down = false;
       zPosition = 45;
       xCenter = 0;
@@ -63,7 +63,7 @@ void Renderer::keyPressEvent(QKeyEvent *keyEvent)
             close();
             break;
     case Qt::Key_R:
-            y_rotate = 0.0f;
+            z_rotate = 0.0f;
             break;
     }
 }
@@ -72,19 +72,23 @@ void Renderer::mouseReleaseEvent(QMouseEvent *)
 {
     mouse_is_down = false;
     delete mouse_down;
-    mouse_down = NULL;
-    y_rotate += current_y_rotate;
-    current_y_rotate = 0;
+    mouse_down = NULL;    
     x_rotate += current_x_rotate;
     current_x_rotate = 0;
+    //y_rotate += current_y_rotate;
+    //current_y_rotate = 0;
+    z_rotate += current_z_rotate;
+    current_z_rotate = 0;
+
 }
 
 void Renderer::mouseMoveEvent(QMouseEvent * evt)
 {
     if(mouse_is_down)
     {
-        current_y_rotate = 0.5f* float(evt->pos().x() - mouse_down->pos().x());
         current_x_rotate = 0.5f* float(evt->pos().y() - mouse_down->pos().y());
+        //current_y_rotate = 0.5f* float(evt->pos().x() - mouse_down->pos().x());
+        current_z_rotate = 0.5f* float(evt->pos().x() - mouse_down->pos().x());
         update();
     }
 }
@@ -103,9 +107,9 @@ void Renderer::updateCamera()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0f, (GLfloat)this->width()/(GLfloat)this->height(), 0.1f, 1000.0f);
-    gluLookAt(xCenter, 0, zPosition, // eye (where camera is at)
-              xCenter, 0, 0, // center (where to look at)
-              0, 1, 0  // up-vector
+    gluLookAt(0, -zPosition, 0, // eye (where camera is at)
+              0, 0, 0, // center (where to look at)
+              0, 0, 1  // up-vector
               );
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_DEPTH_TEST);
@@ -116,10 +120,10 @@ void Renderer::updateCamera()
 
 void Renderer::sceneUpdate()
 {
-    if(model.getLightRayPositions().empty())
-        xCenter = 0.0f;
-    else
-        xCenter = 0.0 * model.getFocalLength();
+    //if(model.getLightRayPositions().empty())
+    //    xCenter = 0.0f;
+    //else
+    //    xCenter = 0.0 * model.getFocalLength();
 
     updateCamera();
 }
@@ -165,8 +169,8 @@ void ModelRendering::paintGL(){
 
     // apply rotation around middle between mesh and receiver
     glTranslatef(xCenter, 0, 0);
-    glRotatef(x_rotate+current_x_rotate, 1.0, 0.0, 0.0);
-    glRotatef(y_rotate+current_y_rotate, 0.0, 1.0, 0.0);
+    glRotatef(x_rotate+current_x_rotate, 1.0f, 0.0f, 0.0f);
+    glRotatef(z_rotate+current_z_rotate, 0.0f, 0.0f, 1.0f);
     glTranslatef(-xCenter, 0, 0);
 
     if(drawAxis)
@@ -206,19 +210,19 @@ void ModelRendering::paintAxis()
     // draw axis
     glBegin(GL_LINES);
         // x
-        glColor3f(0,0,1);
-        glVertex3f(0.f, 0.f, 0.f);
-        glVertex3f(2.0f * model.surfaceSize, 0.f, 0.f);
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glVertex3f(2.0f * model.surfaceSize, 0.0f, 0.0f);
 
         // y
-        glColor3f(0, 1, 0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 2.0f * model.surfaceSize, 0);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glVertex3f(0.0f, 2.0f * model.surfaceSize, 0.0f);
 
         // z
-        glColor3f(1, 0, 0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(0, 0, 2.0f * model.surfaceSize);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glVertex3f(0.0f, 0.0f, 2.0f * model.surfaceSize);
     glEnd();
 }
 
@@ -231,15 +235,15 @@ void ModelRendering::paintMesh(Mesh mesh)
     for (uint i=0; i<mesh.indices.size(); i++)
     {
         v = mesh.vertices[mesh.indices[i].x];
-        glColor3f(0.0f,0.0f,1.0f);
+        glColor3f(0.0f, 0.0f, 1.0f);
         glVertex3f(v.Position.x, v.Position.y, v.Position.z);
 
         v = mesh.vertices[mesh.indices[i].y];
-        glColor3f(0.0f,1.0f,0.0f);
+        glColor3f(0.0f, 1.0f, 0.0f);
         glVertex3f(v.Position.x, v.Position.y, v.Position.z);
 
         v = mesh.vertices[mesh.indices[i].z];
-        glColor3f(1.0f,0.0f,0.0f);
+        glColor3f(1.0f, 0.0f, 0.0f);
         glVertex3f(v.Position.x, v.Position.y, v.Position.z);
     }
     glEnd();

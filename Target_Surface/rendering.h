@@ -33,10 +33,13 @@ public:
         this->neighborMapping = neighborMapping;
     }
 
-    float y_rotate;
     float x_rotate;
-    float current_y_rotate;
+    //float y_rotate;
+    float z_rotate;
+    
     float current_x_rotate;
+    //float current_y_rotate;
+    float current_z_rotate;
 
     float zPosition;
     float xCenter;

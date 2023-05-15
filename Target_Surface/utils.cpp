@@ -26,24 +26,23 @@ glm::vec3 proj(glm::vec3 xs, glm::vec3 di, glm::vec3 pos){
     return result;
 }
 
-float* matrixProduct(n_array* L, float* X){
+/*float* matrixProduct(n_array* L, float* X){
     float* R = new float[NORMALS];
     for(int i=0; i<NORMALS; i++){
         for(int j=0; j<NORMALS; j++)
             R[i]+=L[i][j]*X[j];
     }
     return R;
-}
+}*/
 
-void printMatrix(n_array* X){
+/*void printMatrix(n_array* X){
     for(int i=0; i<NORMALS; i++){
         std::cout<<"| "<<std::flush;
         for(int j=0; j<NORMALS; j++)
             std::cout<<" "<<X[i][j]<<" "<<std::flush;
         std::cout<<" |"<<std::endl;
     }
-
-}
+}*/
 
 bool isEdge(glm::vec3 v){
     bool edge = false;
