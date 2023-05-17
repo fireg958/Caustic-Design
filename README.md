@@ -11,20 +11,32 @@ The goal of this project is to create an open source application that enables ar
 
 ## Building
 ### Debian dependencies:<br>
+`sudo apt update` <br>
 `sudo add-apt-repository ppa:rock-core/qt4` <br>
-`sudo apt-get install cmake libqt4-dev libblas-dev liblapack-dev libtbb-dev libmetis-dev build-essential libsuitesparse-dev liblbfgs-dev libtinyxml-dev libgmp3-dev libmpc-dev libboost-all-dev libglew-dev libsoil-dev libassimp-dev checkinstall`
+`sudo apt install cmake libqt4-dev libblas-dev liblapack-dev libtbb-dev libmetis-dev build-essential libsuitesparse-dev liblbfgs-dev libtinyxml-dev libgmp3-dev libmpc-dev libboost-all-dev libglew-dev libsoil-dev libassimp-dev checkinstall`
 
-install CGAL 4.9.1: <br>
+install CGAL 4.9.1: <br>ls
 `mkdir ~/source` <br>
 `cd ~/source` <br>
 `wget https://github.com/CGAL/cgal/releases/download/releases%2FCGAL-4.9.1/CGAL-4.9.1.tar.xz` <br>
 `tar -xf CGAL-4.9.1.tar.xz` <br>
+`mkdir build-CGAL-4.9.1` <br>
 `cd build-CGAL-4.9.1` <br>
 `cmake ../CGAL-4.9.1` <br>
 `make` <br>
 `sudo checkinstall` <br>
 
-ceres-solver: http://ceres-solver.org/installation.html
+install ceres-solver: http://ceres-solver.org/installation.html <br>
+`cd ~/source` <br>
+`wget http://ceres-solver.org/ceres-solver-2.1.0.tar.gz` <br>
+`sudo apt update` <br>
+`sudo apt-get install libgoogle-glog-dev libgflags-dev libatlas-base-dev libeigen3-dev libsuitesparse-dev` <br>
+`tar zxf ceres-solver-2.1.0.tar.gz`  <br>
+`mkdir ceres-bin`  <br>
+`cd ceres-bin`  <br>
+`cmake ../ceres-solver-2.1.0`  <br>
+`make -j3`  <br>
+`sudo make install`  <br>
 
 ### Build
 We suggest using cmake to build the project. To do so, simple:
