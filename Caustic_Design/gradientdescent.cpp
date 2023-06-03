@@ -18,6 +18,9 @@ void GradientDescent::run(lbfgsfloatval_t *weights)
     float min_step = 0.05f;
     float descendent = 0.999f;
     do{
+        const int updateInterval = 1000; // Update every 1000 milliseconds
+        const std::chrono::milliseconds updateDuration(updateInterval);
+        auto lastUpdate = std::chrono::steady_clock::now();
         iteration++;
         lbfgsfloatval_t val = ot->evaluate(weights, g, n, 1.0);
 

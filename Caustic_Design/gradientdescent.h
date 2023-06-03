@@ -6,6 +6,9 @@
 #include "lbfgs.h"
 #include "math.h"
 
+#include <chrono>
+#include <unistd.h>
+
 class GradientDescent
 {
 public:
