@@ -13,3 +13,5 @@
 **/*creator.user
 
 .vscode
+
+*.dat

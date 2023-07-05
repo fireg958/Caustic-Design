@@ -40,7 +40,7 @@
 #define MAX_Z 1
 #define RAY_SHOOT 50
 
-// if set to true, it will calculate the reflective caustics instead of refractieve
+// if set to true, it will solve for the reflective caustics instead of refractieve
 #define REFLECTIVE_CAUSTICS false 
 
 #if (REFLECTIVE_CAUSTICS == false)
