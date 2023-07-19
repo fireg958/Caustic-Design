@@ -27,7 +27,7 @@ import itertools
 import numpy as np
 from scipy.spatial import ConvexHull
 
-from matplotlib.collections import LineCollection
+from matplotlib.collections import LineCollection,PolyCollection
 from matplotlib import pyplot as plot
 
 # --- Misc. geometry code -----------------------------------------------------

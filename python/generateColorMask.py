@@ -33,6 +33,8 @@ from matplotlib import pyplot as plot
 
 import cv2 as cv
 
+import svgwrite
+
 # --- Misc. geometry code -----------------------------------------------------
 
 def norm2(X):
@@ -155,19 +157,13 @@ def get_voronoi_cells(S, V, tri_list):
 def display(S, R, tri_list, voronoi_cell_map, ax):
     # Setup
     plot.axis('equal')
-    plot.axis('off')    
+    plot.axis('off')
 
     # Set min/max display size, as Matplotlib does it wrong
-    min_corner = np.amin(S, axis = 0) - np.max(R)
-    max_corner = np.amax(S, axis = 0) + np.max(R)
+    min_corner = np.amin(S, axis=0) - np.max(R)
+    max_corner = np.amax(S, axis=0) + np.max(R)
     plot.xlim((min_corner[0], max_corner[0]))
     plot.ylim((min_corner[1], max_corner[1]))
-
-    # Plot the power triangulation
-    #edge_set = frozenset(tuple(sorted(edge)) for tri in tri_list for edge in itertools.combinations(tri, 2))
-    #line_list = LineCollection([(S[i], S[j]) for i, j in edge_set], lw = 1., colors = '.9')
-    #line_list.set_zorder(0)
-    #ax.add_collection(line_list)
 
     # Plot the Voronoi cells
     edge_map = { }
@@ -244,21 +240,104 @@ def sample_color(img, point, size):
 
     return interpolated_rgb
 
+def voronoi_finite_polygons_2d(vor, radius=None):
+    """
+    Reconstruct infinite voronoi regions in a 2D diagram to finite
+    regions.
+    Parameters
+    ----------
+    vor : Voronoi
+        Input diagram
+    radius : float, optional
+        Distance to 'points at infinity'.
+    Returns
+    -------
+    regions : list of tuples
+        Indices of vertices in each revised Voronoi regions.
+    vertices : list of tuples
+        Coordinates for revised Voronoi vertices. Same as coordinates
+        of input vertices, with 'points at infinity' appended to the
+        end.
+    """
+
+    if vor.points.shape[1] != 2:
+        raise ValueError("Requires 2D input")
+
+    new_regions = []
+    new_vertices = vor.vertices.tolist()
+
+    center = vor.points.mean(axis=0)
+    if radius is None:
+        radius = vor.points.ptp().max()*2
+
+    # Construct a map containing all ridges for a given point
+    all_ridges = {}
+    for (p1, p2), (v1, v2) in zip(vor.ridge_points, vor.ridge_vertices):
+        all_ridges.setdefault(p1, []).append((p2, v1, v2))
+        all_ridges.setdefault(p2, []).append((p1, v1, v2))
+
+    # Reconstruct infinite regions
+    for p1, region in enumerate(vor.point_region):
+        vertices = vor.regions[region]
+
+        if all(v >= 0 for v in vertices):
+            # finite region
+            new_regions.append(vertices)
+            continue
+
+        # reconstruct a non-finite region
+        ridges = all_ridges[p1]
+        new_region = [v for v in vertices if v >= 0]
+
+        for p2, v1, v2 in ridges:
+            if v2 < 0:
+                v1, v2 = v2, v1
+            if v1 >= 0:
+                # finite ridge: already in the region
+                continue
+
+            # Compute the missing endpoint of an infinite ridge
+
+            t = vor.points[p2] - vor.points[p1] # tangent
+            t /= np.linalg.norm(t)
+            n = np.array([-t[1], t[0]])  # normal
+
+            midpoint = vor.points[[p1, p2]].mean(axis=0)
+            direction = np.sign(np.dot(midpoint - center, n)) * n
+            far_point = vor.vertices[v2] + direction * radius
+
+            new_region.append(len(new_vertices))
+            new_vertices.append(far_point.tolist())
+
+        # sort region counterclockwise
+        vs = np.asarray([new_vertices[v] for v in new_region])
+        c = vs.mean(axis=0)
+        angles = np.arctan2(vs[:,1] - c[1], vs[:,0] - c[0])
+        new_region = np.array(new_region)[np.argsort(angles)]
+
+        # finish
+        new_regions.append(new_region.tolist())
+
+    return new_regions, np.asarray(new_vertices)
+
 
 # --- Main entry point --------------------------------------------------------
 
 def main():
     # Load your points and weights
-    points_file = "/home/dylan/Documents/Caustic-Design/OTM-Results/BSHH_logo/BSHH_100k_points.dat"
-    weight_file = "/home/dylan/Documents/Caustic-Design/OTM-Results/BSHH_logo/BSHH_100k_points.weight"
-    img = cv.imread('/home/dylan/BSHH.png') 
+    points_file = "OTM-Results/Einstein_600x600/einstein.dat"
+    weight_file = "OTM-Results/Einstein_600x600/einstein.weight"
+    img = cv.imread('OTM-Results/Einstein_600x600/einstein.png') 
 
     size = [-0.5, 0.5, -0.5, 0.5]
 
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
+    plot.axis('equal')
     fig, ax = plot.subplots()
-    #im = ax.imshow(img, extent=size)
+    ax.set_xlim([-0.5, 0.5])
+    ax.set_ylim([-0.5, 0.5])
+    im = ax.imshow(img, extent=size)
 
     print("Extracting points and weights from files..")
 
@@ -285,8 +364,6 @@ def main():
 
     # Compute the Voronoi cells
     voronoi_cell_map = get_voronoi_cells(S, V, tri_list)
-
-    #display(S, R, tri_list, voronoi_cell_map, ax)
 
     print("sample colors of image according to centroids of power diagram..")
 
@@ -317,23 +394,47 @@ def main():
 
     colors /= 256.0
 
+    #plot.scatter(C_x, C_y, s=5, color=colors)
+
+    #display(S, R, tri_list, voronoi_cell_map, ax)
+
     # Generate Voronoi diagram
     vor = Voronoi(S)
 
     # Sort the points and colors based on Voronoi region indices
-    sorted_indices = np.argsort(vor.point_region)
-    sorted_points = S[sorted_indices]
-    sorted_colors = colors[sorted_indices]
+    #sorted_indices = np.argsort(vor.point_region)
+    #sorted_points = S[sorted_indices]
+    #sorted_colors = colors[sorted_indices]
 
     # Plot the Voronoi diagram with the corresponding colors
-    fig, ax = plot.subplots()
-    voronoi_plot_2d(vor, ax=ax, show_points=False, show_vertices=False, line_width=0, line_alpha=0.0, point_size=0)
+    #voronoi_plot_2d(vor, ax=ax, show_points=False, show_vertices=False, line_width=0, line_alpha=0.0, point_size=0)
 
     # Assign colors to regions
-    for i, region in enumerate(vor.regions):
-        if region and not -1 in region:
-            polygon = [vor.vertices[j] for j in region]
-            plot.fill(*zip(*polygon), color=sorted_colors[i % len(sorted_colors)])
+    #for i, region in enumerate(vor.regions):
+    #    if region and not -1 in region:
+    #        polygon = [vor.vertices[j] for j in region]
+    #        plot.fill(*zip(*polygon), color=sorted_colors[i % len(sorted_colors)])
+
+
+    # plot
+    regions, vertices = voronoi_finite_polygons_2d(vor)
+
+
+    # colorize
+    for i, region in enumerate(regions):
+        polygon = vertices[region]
+        plot.fill(*zip(*polygon), alpha=0.4, color=colors[i])
+
+    # Create a new SVG drawing
+    #dwg = svgwrite.Drawing('polygons.svg', profile='tiny')
+
+    # Iterate over the regions and draw the polygons
+    #for i, region in enumerate(regions):
+    #    polygon = vertices[region]
+    #    dwg.add(dwg.polygon(points=polygon + 0.5, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})"))
+
+    # Save the SVG drawing
+    #dwg.save()
 
     # Display the result
     plot.show()
