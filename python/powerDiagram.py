@@ -24,7 +24,7 @@
 
 
 import itertools
-import numpy
+import numpy as np
 from scipy.spatial import ConvexHull
 
 from matplotlib.collections import LineCollection
@@ -33,7 +33,7 @@ from matplotlib import pyplot as plot
 # --- Misc. geometry code -----------------------------------------------------
 
 def norm2(X):
-    return numpy.sqrt(numpy.sum(X ** 2))
+    return np.sqrt(np.sum(X ** 2))
 
 def normalized(X):
     return X / norm2(X)
@@ -42,27 +42,27 @@ def normalized(X):
 # --- Delaunay triangulation --------------------------------------------------
 
 def get_triangle_normal(A, B, C):
-    return normalized(numpy.cross(A, B) + numpy.cross(B, C) + numpy.cross(C, A))
+    return normalized(np.cross(A, B) + np.cross(B, C) + np.cross(C, A))
 
 def get_power_circumcenter(A, B, C):
     N = get_triangle_normal(A, B, C)
     return (-.5 / N[2]) * N[:2]
 
 def is_ccw_triangle(A, B, C):
-    M = numpy.concatenate([numpy.stack([A, B, C]), numpy.ones((3, 1))], axis = 1)
-    return numpy.linalg.det(M) > 0
+    M = np.concatenate([np.stack([A, B, C]), np.ones((3, 1))], axis = 1)
+    return np.linalg.det(M) > 0
 
 def get_power_triangulation(S, R):
     # Compute the lifted weighted points
-    S_norm = numpy.sum(S ** 2, axis = 1) - R
-    S_lifted = numpy.concatenate([S, S_norm[:,None]], axis = 1)
+    S_norm = np.sum(S ** 2, axis = 1) - R*0.1
+    S_lifted = np.concatenate([S, S_norm[:,None]], axis = 1)
 
     # Special case for 3 points
     if S.shape[0] == 3:
         if is_ccw_triangle(S[0], S[1], S[2]):
-            return [[0, 1, 2]], numpy.array([get_power_circumcenter(*S_lifted)])
+            return [[0, 1, 2]], np.array([get_power_circumcenter(*S_lifted)])
         else:
-            return [[0, 2, 1]], numpy.array([get_power_circumcenter(*S_lifted)])
+            return [[0, 2, 1]], np.array([get_power_circumcenter(*S_lifted)])
 
     # Compute the convex hull of the lifted weighted points
     hull = ConvexHull(S_lifted)
@@ -71,7 +71,7 @@ def get_power_triangulation(S, R):
     tri_list = tuple([a, b, c] if is_ccw_triangle(S[a], S[b], S[c]) else [a, c, b]  for (a, b, c), eq in zip(hull.simplices, hull.equations) if eq[2] <= 0)
         
     # Compute the Voronoi points
-    V = numpy.array([get_power_circumcenter(*S_lifted[tri]) for tri in tri_list])
+    V = np.array([get_power_circumcenter(*S_lifted[tri]) for tri in tri_list])
 
     # Job done
     return tri_list, V
@@ -117,9 +117,9 @@ def get_voronoi_cells(S, V, tri_list):
                 # Compute the segment parameters
                 A, B, C, D = S[u], S[v], S[w], V[i]
                 U = normalized(B - A)
-                I = A + numpy.dot(D - A, U) * U
+                I = A + np.dot(D - A, U) * U
                 W = normalized(I - D)
-                if numpy.dot(W, I - C) < 0:
+                if np.dot(W, I - C) < 0:
                     W = -W  
             
                 # Add the segment
@@ -155,8 +155,8 @@ def display(S, R, tri_list, voronoi_cell_map):
     plot.axis('off')    
 
     # Set min/max display size, as Matplotlib does it wrong
-    min_corner = numpy.amin(S, axis = 0) - numpy.max(R)
-    max_corner = numpy.amax(S, axis = 0) + numpy.max(R)
+    min_corner = np.amin(S, axis = 0) - np.max(R)
+    max_corner = np.amax(S, axis = 0) + np.max(R)
     plot.xlim((min_corner[0], max_corner[0]))
     plot.ylim((min_corner[1], max_corner[1]))
 
@@ -207,12 +207,12 @@ def main():
     for point in points_data:
         x, y = map(float, point.split(" "))
         S.append([x, y])
-    S = numpy.array(S)
+    S = np.array(S)
 
     # Load weights
     with open(weight_file, "r") as f:
         weight_data = f.read().splitlines()
-    R = numpy.array(list(map(float, weight_data)))
+    R = np.array(list(map(float, weight_data)))
 
     # Compute the power triangulation of the circles
     tri_list, V = get_power_triangulation(S, R)
@@ -227,7 +227,7 @@ def main():
     output_file = "voronoi_centroids.dat"
     with open(output_file, "w") as f:
         for point, segment_list in voronoi_cell_map.items():
-            weighted_centroid = numpy.zeros(2)
+            weighted_centroid = np.zeros(2)
             total_weight = 0.0
             for _, (A, U, tmin, tmax) in segment_list:
                 if tmin is None:
