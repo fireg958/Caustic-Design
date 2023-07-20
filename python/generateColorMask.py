@@ -23,6 +23,7 @@
 # https://gist.github.com/marmakoide/45d5389252683ae09c2df49d0548a627
 
 # Modified by Dylan Missuwe
+# All modifications by Dylan Missuwe are released under the GPL 3.0 Licence
 
 import itertools
 import numpy as np
