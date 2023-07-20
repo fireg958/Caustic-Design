@@ -22,6 +22,7 @@
 # original author: 
 # https://gist.github.com/marmakoide/45d5389252683ae09c2df49d0548a627
 
+# Modified by Dylan Missuwe
 
 import itertools
 import numpy as np
@@ -240,6 +241,7 @@ def sample_color(img, point, size):
 
     return interpolated_rgb
 
+# https://gist.github.com/pv/8036995
 def voronoi_finite_polygons_2d(vor, radius=None):
     """
     Reconstruct infinite voronoi regions in a 2D diagram to finite
