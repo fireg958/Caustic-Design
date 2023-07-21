@@ -35,6 +35,9 @@ import cv2 as cv
 
 import svgwrite
 
+from shapely.geometry import Polygon
+from shapely.ops import unary_union
+
 # --- Misc. geometry code -----------------------------------------------------
 
 def norm2(X):
@@ -240,26 +243,7 @@ def sample_color(img, point, size):
 
     return interpolated_rgb
 
-def voronoi_finite_polygons_2d(vor, radius=None):
-    """
-    Reconstruct infinite voronoi regions in a 2D diagram to finite
-    regions.
-    Parameters
-    ----------
-    vor : Voronoi
-        Input diagram
-    radius : float, optional
-        Distance to 'points at infinity'.
-    Returns
-    -------
-    regions : list of tuples
-        Indices of vertices in each revised Voronoi regions.
-    vertices : list of tuples
-        Coordinates for revised Voronoi vertices. Same as coordinates
-        of input vertices, with 'points at infinity' appended to the
-        end.
-    """
-
+def voronoi_finite_polygons_2d(vor, radius=None, clip_box=None):
     if vor.points.shape[1] != 2:
         raise ValueError("Requires 2D input")
 
@@ -268,7 +252,7 @@ def voronoi_finite_polygons_2d(vor, radius=None):
 
     center = vor.points.mean(axis=0)
     if radius is None:
-        radius = vor.points.ptp().max()*2
+        radius = vor.points.ptp().max() * 2
 
     # Construct a map containing all ridges for a given point
     all_ridges = {}
@@ -297,8 +281,7 @@ def voronoi_finite_polygons_2d(vor, radius=None):
                 continue
 
             # Compute the missing endpoint of an infinite ridge
-
-            t = vor.points[p2] - vor.points[p1] # tangent
+            t = vor.points[p2] - vor.points[p1]  # tangent
             t /= np.linalg.norm(t)
             n = np.array([-t[1], t[0]])  # normal
 
@@ -312,32 +295,96 @@ def voronoi_finite_polygons_2d(vor, radius=None):
         # sort region counterclockwise
         vs = np.asarray([new_vertices[v] for v in new_region])
         c = vs.mean(axis=0)
-        angles = np.arctan2(vs[:,1] - c[1], vs[:,0] - c[0])
+        angles = np.arctan2(vs[:, 1] - c[1], vs[:, 0] - c[0])
         new_region = np.array(new_region)[np.argsort(angles)]
+
+        # Clip the region to the bounding box
+        if clip_box is not None:
+            bounding_box = Polygon([(clip_box[0], clip_box[2]), (clip_box[0], clip_box[3]),
+                                    (clip_box[1], clip_box[3]), (clip_box[1], clip_box[2])])
+            polygon_points = [new_vertices[v] for v in new_region]
+            polygon = Polygon(polygon_points)
+            clipped_polygon = polygon.intersection(bounding_box)
+            if not clipped_polygon.is_empty:
+                if clipped_polygon.geom_type == "Polygon":
+                    new_region = [v for v in new_region if clipped_polygon.contains(Polygon(new_vertices[v]))]
+                elif clipped_polygon.geom_type == "MultiPolygon":
+                    new_region = [v for v in new_region if any(clipped_polygon.contains(Polygon(new_vertices[v])))
+                                  for geom in clipped_polygon.geoms]
 
         # finish
         new_regions.append(new_region.tolist())
 
     return new_regions, np.asarray(new_vertices)
 
+def save_voronoi_as_svg(regions, vertices, colors, file_name):
+    # Create a new SVG drawing
+    dwg = svgwrite.Drawing(file_name, profile='tiny')
+
+    # Define the bounding box
+    bbox = [-0.5, 0.5, -0.5, 0.5]
+
+    # Iterate over the regions and draw the cropped polygons
+    for i, region in enumerate(regions):
+        polygon = vertices[region]
+
+        cropped_polygon = []
+        for x, y in polygon:
+            # Ensure x and y coordinates are within the bounding box
+            x = max(min(x, bbox[1]), bbox[0])
+            y = max(min(y, bbox[3]), bbox[2])
+            cropped_polygon.append((x, y))
+
+        # Check if any point of the polygon is outside the bounding box
+        outside_bbox = any(x < bbox[0] or x > bbox[1] or y < bbox[2] or y > bbox[3] for x, y in polygon)
+
+        if not outside_bbox:
+            dwg.add(dwg.polygon(points=cropped_polygon, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})"))
+
+    # Save the cropped SVG drawing
+    dwg.save()
+
+def sample_colors_from_power_diagram(voronoi_cell_map, img, bounding_box):
+    C_x = []
+    C_y = []
+    colors = []
+    for point, segment_list in voronoi_cell_map.items():
+        weighted_centroid = np.zeros(2)
+        total_weight = 0.0
+        for edge, (A, U, tmin, tmax) in segment_list:
+            if tmin is None:
+                tmin = -10
+            if tmax is None:
+                tmax = 10
+            segment_centroid = get_weighted_centroid(A, U, tmin, tmax)
+            segment_weight = abs(tmax - tmin)
+            weighted_centroid += segment_centroid * segment_weight
+            total_weight += segment_weight
+        weighted_centroid /= total_weight
+        C_x.append(weighted_centroid[0])
+        C_y.append(weighted_centroid[1])
+
+        # TODO: sample average pixel color within cell instead of only sampeling the centroid of the cell
+        color = sample_color(img, [weighted_centroid[0], 0.00001-weighted_centroid[1]], bounding_box)
+        colors.append(color)
+    
+    return colors
+
 
 # --- Main entry point --------------------------------------------------------
 
 def main():
-    # Load your points and weights
-    points_file = "OTM-Results/Einstein_600x600/einstein.dat"
-    weight_file = "OTM-Results/Einstein_600x600/einstein.weight"
-    img = cv.imread('OTM-Results/Einstein_600x600/einstein.png') 
+    # Load your points, weights, and color image
+    points_file = "/home/dylan/Olympic_Rings.dat"
+    weight_file = "/home/dylan/Olympic_Rings.weight"
+    img = cv.imread('/home/dylan/Olympic_Rings_Color.png') 
 
     size = [-0.5, 0.5, -0.5, 0.5]
 
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
-    plot.axis('equal')
-    fig, ax = plot.subplots()
-    ax.set_xlim([-0.5, 0.5])
-    ax.set_ylim([-0.5, 0.5])
-    im = ax.imshow(img, extent=size)
+    #fig, ax = plot.subplots()
+    #ax.imshow(img, extent=size)
 
     print("Extracting points and weights from files..")
 
@@ -367,76 +414,30 @@ def main():
 
     print("sample colors of image according to centroids of power diagram..")
 
-    C_x = []
-    C_y = []
-    colors = []
-    for point, segment_list in voronoi_cell_map.items():
-        weighted_centroid = np.zeros(2)
-        total_weight = 0.0
-        for edge, (A, U, tmin, tmax) in segment_list:
-            if tmin is None:
-                tmin = -10
-            if tmax is None:
-                tmax = 10
-            segment_centroid = get_weighted_centroid(A, U, tmin, tmax)
-            segment_weight = abs(tmax - tmin)
-            weighted_centroid += segment_centroid * segment_weight
-            total_weight += segment_weight
-        weighted_centroid /= total_weight
-        C_x.append(weighted_centroid[0])
-        C_y.append(weighted_centroid[1])
-        color = sample_color(img, [weighted_centroid[0], 0.00001-weighted_centroid[1]], size)
-        colors.append(color)
+    colors = sample_colors_from_power_diagram(voronoi_cell_map, img, size)
 
     print("drawing voronoi diagram with sampled colors..")
     
     colors = np.array(colors, dtype=float)
-
     colors /= 256.0
-
-    #plot.scatter(C_x, C_y, s=5, color=colors)
-
-    #display(S, R, tri_list, voronoi_cell_map, ax)
 
     # Generate Voronoi diagram
     vor = Voronoi(S)
 
-    # Sort the points and colors based on Voronoi region indices
-    #sorted_indices = np.argsort(vor.point_region)
-    #sorted_points = S[sorted_indices]
-    #sorted_colors = colors[sorted_indices]
-
-    # Plot the Voronoi diagram with the corresponding colors
-    #voronoi_plot_2d(vor, ax=ax, show_points=False, show_vertices=False, line_width=0, line_alpha=0.0, point_size=0)
-
-    # Assign colors to regions
-    #for i, region in enumerate(vor.regions):
-    #    if region and not -1 in region:
-    #        polygon = [vor.vertices[j] for j in region]
-    #        plot.fill(*zip(*polygon), color=sorted_colors[i % len(sorted_colors)])
-
-
-    # plot
     regions, vertices = voronoi_finite_polygons_2d(vor)
-
 
     # colorize
     for i, region in enumerate(regions):
         polygon = vertices[region]
-        plot.fill(*zip(*polygon), alpha=0.4, color=colors[i])
+        plot.fill(*zip(*polygon), alpha=1, color=colors[i])
 
-    # Create a new SVG drawing
-    #dwg = svgwrite.Drawing('polygons.svg', profile='tiny')
-
-    # Iterate over the regions and draw the polygons
-    #for i, region in enumerate(regions):
-    #    polygon = vertices[region]
-    #    dwg.add(dwg.polygon(points=polygon + 0.5, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})"))
-
-    # Save the SVG drawing
-    #dwg.save()
+    save_voronoi_as_svg(regions, vertices, colors, '../cropped_polygons.svg')
 
     # Display the result
+    plot.axis('equal')
+    plot.xlim(-0.5, 0.5)
+    plot.ylim(-0.5, 0.5)
+
     plot.show()
 
 if __name__ == '__main__':
