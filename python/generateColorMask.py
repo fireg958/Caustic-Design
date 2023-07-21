@@ -22,6 +22,8 @@
 # original author: 
 # https://gist.github.com/marmakoide/45d5389252683ae09c2df49d0548a627
 
+# Modified by Dylan Missuwe
+# All modifications by Dylan Missuwe are released under the GPL 3.0 Licence
 
 import itertools
 import numpy as np
@@ -243,7 +245,31 @@ def sample_color(img, point, size):
 
     return interpolated_rgb
 
+<<<<<<< HEAD
 def voronoi_finite_polygons_2d(vor, radius=None, clip_box=None):
+=======
+# https://gist.github.com/pv/8036995
+def voronoi_finite_polygons_2d(vor, radius=None):
+    """
+    Reconstruct infinite voronoi regions in a 2D diagram to finite
+    regions.
+    Parameters
+    ----------
+    vor : Voronoi
+        Input diagram
+    radius : float, optional
+        Distance to 'points at infinity'.
+    Returns
+    -------
+    regions : list of tuples
+        Indices of vertices in each revised Voronoi regions.
+    vertices : list of tuples
+        Coordinates for revised Voronoi vertices. Same as coordinates
+        of input vertices, with 'points at infinity' appended to the
+        end.
+    """
+
+>>>>>>> 6ad8a27517bf95967f9e65350e812b6265ecb91b
     if vor.points.shape[1] != 2:
         raise ValueError("Requires 2D input")
 
