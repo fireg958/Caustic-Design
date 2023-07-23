@@ -28,9 +28,9 @@
 import itertools
 import numpy as np
 from scipy.spatial import ConvexHull
-from scipy.spatial import Voronoi, voronoi_plot_2d
+from scipy.spatial import Voronoi
 
-from matplotlib.collections import LineCollection, PolyCollection
+from matplotlib.collections import LineCollection
 from matplotlib import pyplot as plot
 
 import cv2 as cv
@@ -319,32 +319,45 @@ def voronoi_finite_polygons_2d(vor, radius=None, clip_box=None):
 
     return new_regions, np.asarray(new_vertices)
 
-def save_voronoi_as_svg(regions, vertices, colors, file_name):
-    # Create a new SVG drawing
-    dwg = svgwrite.Drawing(file_name, profile='tiny')
+def clip_polygon_to_box(polygon_vertices, clip_box):
+    # Convert the bounding box to a polygon
+    clip_polygon = Polygon(clip_box)
 
-    # Define the bounding box
-    bbox = [-0.5, 0.5, -0.5, 0.5]
+    # Create a Polygon object from the input polygon_vertices
+    polygon = Polygon(polygon_vertices)
 
+    # Perform the intersection/clipping using Shapely
+    clipped_polygon = polygon.intersection(clip_polygon)
+
+    # If the intersection resulted in multiple polygons, we take their union
+    if clipped_polygon.geom_type == 'MultiPolygon':
+        clipped_polygon = unary_union(clipped_polygon)
+
+    return list(clipped_polygon.exterior.coords)
+
+def save_voronoi_as_svg(regions, vertices, colors, file_name, translate=(0, 0), scale_factor=1.0):
+    
     # Iterate over the regions and draw the cropped polygons
     for i, region in enumerate(regions):
         polygon = vertices[region]
 
         cropped_polygon = []
         for x, y in polygon:
+            # Apply translation and scaling
+            x = (x + translate[0]) * scale_factor
+            y = (y + translate[1]) * scale_factor
+
             # Ensure x and y coordinates are within the bounding box
-            x = max(min(x, bbox[1]), bbox[0])
-            y = max(min(y, bbox[3]), bbox[2])
             cropped_polygon.append((x, y))
 
-        # Check if any point of the polygon is outside the bounding box
-        outside_bbox = any(x < bbox[0] or x > bbox[1] or y < bbox[2] or y > bbox[3] for x, y in polygon)
+        dwg.add(dwg.polygon(points=cropped_polygon, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})"))
 
-        if not outside_bbox:
-            dwg.add(dwg.polygon(points=cropped_polygon, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})"))
-
-    # Save the cropped SVG drawing
-    dwg.save()
+    try:
+        # Save the SVG drawing
+        dwg.save()
+        print("SVG file saved successfully.")
+    except Exception as e:
+        print("Error while saving the SVG file:", e)
 
 def sample_colors_from_power_diagram(voronoi_cell_map, img, bounding_box):
     C_x = []
@@ -377,11 +390,13 @@ def sample_colors_from_power_diagram(voronoi_cell_map, img, bounding_box):
 
 def main():
     # Load your points, weights, and color image
-    points_file = "/home/dylan/Olympic_Rings.dat"
-    weight_file = "/home/dylan/Olympic_Rings.weight"
-    img = cv.imread('/home/dylan/Olympic_Rings_Color.png') 
+    points_file = "OTM-Results/Einstein_600x600/einstein.dat"
+    weight_file = "OTM-Results/Einstein_600x600/einstein.weight"
+    img = cv.imread('OTM-Results/Einstein_600x600/einstein.png') 
 
-    size = [-0.5, 0.5, -0.5, 0.5]
+    bbox = [-0.5, 0.5, -0.5, 0.5]
+
+    svg_scale = 100
 
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
@@ -416,7 +431,7 @@ def main():
 
     print("sample colors of image according to centroids of power diagram..")
 
-    colors = sample_colors_from_power_diagram(voronoi_cell_map, img, size)
+    colors = sample_colors_from_power_diagram(voronoi_cell_map, img, bbox)
 
     print("drawing voronoi diagram with sampled colors..")
     
@@ -428,17 +443,26 @@ def main():
 
     regions, vertices = voronoi_finite_polygons_2d(vor)
 
-    # colorize
+    dwg = svgwrite.Drawing("../cropped_polygons.svg", profile='tiny', size=(f"{100}px", f"{100}px"))
+    bounding_box = [(bbox[0], bbox[2]), (bbox[0], bbox[3]), (bbox[1], bbox[3]), (bbox[1], bbox[2])]
     for i, region in enumerate(regions):
-        polygon = vertices[region]
-        plot.fill(*zip(*polygon), alpha=1, color=colors[i])
+        polygon_indices = region
+        clipped_polygon = clip_polygon_to_box(vertices[polygon_indices], bounding_box)
 
-    save_voronoi_as_svg(regions, vertices, colors, '../cropped_polygons.svg')
+        plot.fill(*zip(*clipped_polygon), alpha=1, color=colors[i])
+
+        points = [((x - bbox[0])*svg_scale, (y - bbox[2])*svg_scale) for x, y in clipped_polygon]
+
+        dwg.add(dwg.polygon(points, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})", opacity=1))
+
+    dwg.save()
+
+    #git commit -m "implemented voronoi diagram bounding on the final color mask"
 
     # Display the result
     plot.axis('equal')
-    plot.xlim(-0.5, 0.5)
-    plot.ylim(-0.5, 0.5)
+    plot.xlim(bbox[0], bbox[1])
+    plot.ylim(bbox[2], bbox[3])
 
     plot.show()
 
