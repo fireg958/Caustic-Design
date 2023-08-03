@@ -1,7 +1,7 @@
 # Caustic-Design-Project
 Based on the original paper: [High-Contrast Computational Caustic Design](https://taiya.github.io/pubs/schwartzburg2014caustics.pdf)
 
-There are two programs in this project. 
+There are two programs in this project.
 
  1.  Caustic-Design - handles Optimal-Transport and corresponding tasks
  2.  Target Optimization - handles 3D Optimization
@@ -10,6 +10,8 @@ There are two programs in this project.
 The goal of this project is to create an open source application that enables artists and researchers to compute the geometry of a surface such that its caustics cast a specified target distribution (an image for example).
 
 ## Building
+
+Tested on Debian10 and Ubuntu 20.04. Because use of `ppa:rock-core/qt4`, it is not compatible with Ubuntu 22.04 and Debian11.
 ### Debian dependencies:<br>
 `sudo apt update` <br>
 `sudo add-apt-repository ppa:rock-core/qt4` <br>
@@ -57,7 +59,7 @@ Next, check for the existence of the dynamic library path environment variable (
 `echo $LD_LIBRARY_PATH`
 
 If there is nothing to be displayed, add a default path value <br>
-`LD_LIBRARY_PATH=/usr/local/lib`
+`export LD_LIBRARY_PATH=/usr/local/lib/`
 
 If everything went well, you should be able to run Caustic_Design and Target_Surface by entering the command: <br>
 `./Caustic_Design`
