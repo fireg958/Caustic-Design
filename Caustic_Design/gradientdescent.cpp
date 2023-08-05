@@ -8,7 +8,7 @@ GradientDescent::GradientDescent(OptimalTransport* ot):
 void GradientDescent::run(lbfgsfloatval_t *weights)
 {
 
-    uint n = this.ot->get_level_sites(this.ot->current_level);
+    uint n = this->ot->get_level_sites(this->ot->current_level);
     lbfgsfloatval_t* g = new lbfgsfloatval_t[n];
 
     int iteration = 0;
@@ -19,7 +19,7 @@ void GradientDescent::run(lbfgsfloatval_t *weights)
     float descendent = 0.999f;
     do{
         iteration++;
-        lbfgsfloatval_t val = this.ot->evaluate(weights, g, n, 1.0);
+        lbfgsfloatval_t val = this->ot->evaluate(weights, g, n, 1.0);
 
         for (uint i=0; i<n; i++)
         {
