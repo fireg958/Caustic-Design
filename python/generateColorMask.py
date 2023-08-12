@@ -25,6 +25,16 @@
 # Modified by Dylan Missuwe
 # All modifications by Dylan Missuwe are released under the GPL 3.0 Licence
 
+
+
+# This python script takes in the points and weights of the OTM 
+# (Optimal Trasport Map), aswel as the color image that generated the
+# OTM. The script then returns an .svg image that represents the color
+# mask for the caustic surface. 
+
+# TODO: get average color that lies inside the power cell instead of
+# only sampling the centroid
+
 import itertools
 import numpy as np
 from scipy.spatial import ConvexHull
@@ -456,8 +466,6 @@ def main():
         dwg.add(dwg.polygon(points, fill=f"rgb({int(colors[i][0]*255)}, {int(colors[i][1]*255)}, {int(colors[i][2]*255)})", opacity=1))
 
     dwg.save()
-
-    #git commit -m "implemented voronoi diagram bounding on the final color mask"
 
     # Display the result
     plot.axis('equal')
