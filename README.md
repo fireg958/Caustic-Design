@@ -9,6 +9,8 @@ There are two programs in this project.
 ## Goal
 The goal of this project is to create an open source application that enables artists and researchers to compute the geometry of a surface such that its caustics cast a specified target distribution (an image for example).
 
+![animation](./animation.gif)
+
 ## Building
 
 Tested on Debian10 and Ubuntu 20.04. Because use of `ppa:rock-core/qt4`, it is not compatible with Ubuntu 22.04 and Debian11.
