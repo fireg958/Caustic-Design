@@ -94,11 +94,11 @@ Lets consider a rectangular grid of prisms. Collimated light enters the prism gr
 
 We can generate a prism grid where each prism redirects the licht to one of the points of the point set. And thus creating an object that turns colimated licht into an olympic rings image.
 
-The problem is, this prism grid is very dificult to make, even more so with smaller prisms. To solve this we can use an initially flat surface that is shaped like a rectangular mesh with vertices and faces. When we move one of the vetices of this mesh slightly outside of the flat surface, the faces that are connected to that vertex wil change their tilt slightly (think of 3d moddeling). Now, we can then ask an optimization algorithm to solve the hights of the vertices such that the tilt of every face is as close as possible to the required tilt calculated by snells law. The optimization algorithm will then spit out the ideal hights of every vertex such that when we shine colimated light through it, it wil project our image.
+The problem is, this prism grid is very dificult to make, even more so with smaller prisms. To solve this we can use an initially flat surface that is shaped like a rectangular mesh with vertices and faces. When we move one of the vertices of this mesh slightly outside of the flat surface, the faces that are connected to that vertex wil change their tilt slightly (think of 3d moddeling). Now, we can then ask an optimization algorithm to solve the hights of the vertices such that the tilt of every face is as close as possible to the required tilt calculated by snells law. The optimization algorithm will then spit out the ideal hights of every vertex such that when we shine colimated light through it, it wil project our image.
 
 But in reality, this isn't quite as simple as that. That's where optimal transport comes in...
 
-To get the best results, we need neighboring facets to have as little as possible tilt difference. We cannot guarantee that if we assign each facet to each target point at random. In fact, this will generate very poor results.
+To get the best results, we need neighboring facets to have as little as possible tilt difference. We cannot guarantee this if we assign each facet to each target point at random. In fact, this will generate very poor, or even no results.
 
 TODO
 
