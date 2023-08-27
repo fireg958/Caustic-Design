@@ -55,7 +55,7 @@
     <addaction name="actionToggleInvert"/>
     <addaction name="actionOpenImage"/>
     <addaction name="actionLoadSourceImage"/>
-    <addaction name="actionLoadWeights"/>
+    <!--<addaction name="actionLoadWeights"/>-->
     <addaction name="separator"/>
     <addaction name="actionOpenPoints"/>
     <addaction name="actionOpenSourceDAT"/>
@@ -63,7 +63,7 @@
     <addaction name="actionSavePoints"/>
     <addaction name="actionSaveEPS"/>
     <addaction name="separator"/>
-    <addaction name="actionLoadSingularities"/>
+    <!--<addaction name="actionLoadSingularities"/>-->
     <addaction name="separator"/>
     <addaction name="actionSnapshot"/>
     <addaction name="actionClear"/>
@@ -74,23 +74,23 @@
     </property>
     <addaction name="actionToggleTimer"/>
     <addaction name="actionSetParameters"/>
-    <addaction name="actionToggleFixedConnectivity"/>
+    <!--<addaction name="actionToggleFixedConnectivity"/>-->
     <addaction name="separator"/>
-    <addaction name="actionResetWeights"/>
-    <addaction name="actionFullOptimization"/>
+    <!--<addaction name="actionResetWeights"/>-->
+    <!--<addaction name="actionFullOptimization"/>-->
     <addaction name="separator"/>
-    <addaction name="actionOptimizeWeightsGD"/>
-    <addaction name="actionOptimizeWeightsGDUntil"/>
-    <addaction name="actionOptimizeWeightsNewton"/>
-    <addaction name="actionOptimizeWeightsNewtonUntil"/>
+    <!--<addaction name="actionOptimizeWeightsGD"/>-->
+    <!--<addaction name="actionOptimizeWeightsGDUntil"/>-->
+    <!--<addaction name="actionOptimizeWeightsNewton"/>-->
+    <!--<addaction name="actionOptimizeWeightsNewtonUntil"/>-->
     <addaction name="separator"/>
-    <addaction name="actionOptimizePointsGD"/>
-    <addaction name="actionOptimizePointsLloyd"/>
+    <!--<addaction name="actionOptimizePointsGD"/>-->
+    <!--<addaction name="actionOptimizePointsLloyd"/>-->
     <addaction name="separator"/>
-    <addaction name="actionBreak_Regularity"/>
+    <!--<addaction name="actionBreak_Regularity"/>-->
     <addaction name="separator"/>
-    <addaction name="actionCountSitesPerBin"/>
-    <addaction name="actionVoronoiCreation"/>
+    <!--<addaction name="actionCountSitesPerBin"/>-->
+    <!--<addaction name="actionVoronoiCreation"/>-->
     <addaction name="actionComputeInterpolation"/>
     <addaction name="actionCalculateOptimalTransport"/>
    </widget>
@@ -119,14 +119,14 @@
     <addaction name="actionViewCapacity"/>
     <addaction name="actionViewVariance"/>
     <addaction name="separator"/>
-    <addaction name="actionViewCapacityHistogram"/>
-    <addaction name="actionViewWeightHistogram"/>
+    <!--<addaction name="actionViewCapacityHistogram"/>-->
+    <!--<addaction name="actionViewWeightHistogram"/>-->
    </widget>
    <widget class="QMenu" name="menuData">
     <property name="title">
      <string>Data</string>
     </property>
-    <addaction name="actionGenerateVariablePoints"/>
+    <!--<addaction name="actionGenerateVariablePoints"/>-->
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuData"/>
@@ -205,14 +205,14 @@
     <string>W</string>
    </property>
   </action>
-  <action name="actionOptimizeWeightsGD">
+  <!--<action name="actionOptimizeWeightsGD">
    <property name="text">
     <string>Opt-W Grad. Descent (one step)</string>
    </property>
    <property name="shortcut">
     <string>Z</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionViewDomain">
    <property name="checkable">
     <bool>true</bool>
@@ -260,7 +260,7 @@
     <string>C</string>
    </property>
   </action>
-  <action name="actionViewCapacityHistogram">
+  <!--<action name="actionViewCapacityHistogram">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -270,23 +270,23 @@
    <property name="shortcut">
     <string>Shift+C</string>
    </property>
-  </action>
-  <action name="actionResetWeights">
+  </action>-->
+  <!--<action name="actionResetWeights">
    <property name="text">
     <string>Reset W</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
    </property>
-  </action>
-  <action name="actionOptimizePointsLloyd">
+  </action>-->
+  <!--<action name="actionOptimizePointsLloyd">
    <property name="text">
     <string>Opt-X Lloyd</string>
    </property>
    <property name="shortcut">
     <string>L</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionSavePoints">
    <property name="text">
     <string>Save DAT</string>
@@ -303,23 +303,23 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionOptimizePointsGD">
+  <!--<action name="actionOptimizePointsGD">
    <property name="text">
     <string>Opt-X Grad. Descent</string>
    </property>
    <property name="shortcut">
     <string>X</string>
    </property>
-  </action>
-  <action name="actionOptimizeWeightsNewton">
+  </action>-->
+  <!--<action name="actionOptimizeWeightsNewton">
    <property name="text">
     <string>Opt-W Newton (one step)</string>
    </property>
    <property name="shortcut">
     <string>K</string>
    </property>
-  </action>
-  <action name="actionViewWeightHistogram">
+  </action>-->
+  <!--<action name="actionViewWeightHistogram">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -329,23 +329,23 @@
    <property name="shortcut">
     <string>Shift+W</string>
    </property>
-  </action>
-  <action name="actionOptimizeWeightsNewtonUntil">
+  </action>-->
+  <!--<action name="actionOptimizeWeightsNewtonUntil">
    <property name="text">
     <string>Opt-W Newton (convergence)</string>
    </property>
    <property name="shortcut">
     <string>Shift+K</string>
    </property>
-  </action>
-  <action name="actionOptimizeWeightsGDUntil">
+  </action>-->
+  <!--<action name="actionOptimizeWeightsGDUntil">
    <property name="text">
     <string>Opt-W Grad. Descent (convergence)</string>
    </property>
    <property name="shortcut">
     <string>Shift+Z</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionViewVariance">
    <property name="checkable">
     <bool>true</bool>
@@ -396,14 +396,14 @@
     <string>2</string>
    </property>
   </action>
-  <action name="actionGenerateVariablePoints">
+  <!--<action name="actionGenerateVariablePoints">
    <property name="text">
     <string>Init X adapted to image</string>
    </property>
    <property name="shortcut">
     <string>I</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionOpenImage">
    <property name="text">
     <string>Load Image</string>
@@ -434,14 +434,14 @@
     <string>Q</string>
    </property>
   </action>
-  <action name="actionFullOptimization">
+  <!--<action name="actionFullOptimization">
    <property name="text">
     <string>Full Opt</string>
    </property>
    <property name="shortcut">
     <string>A</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionToggleTimer">
    <property name="checkable">
     <bool>true</bool>
@@ -453,7 +453,7 @@
     <string>-</string>
    </property>
   </action>
-  <action name="actionToggleFixedConnectivity">
+  <!--<action name="actionToggleFixedConnectivity">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -463,7 +463,7 @@
    <property name="shortcut">
     <string>=</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionViewBarycenter">
    <property name="checkable">
     <bool>true</bool>
@@ -475,7 +475,7 @@
     <string>Shift+B</string>
    </property>
   </action>
-  <action name="actionViewRegularity">
+  <!--<action name="actionViewRegularity">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -485,15 +485,15 @@
    <property name="shortcut">
     <string>R</string>
    </property>
-  </action>
-  <action name="actionCountSitesPerBin">
+  </action>-->
+  <!--<action name="actionCountSitesPerBin">
    <property name="text">
     <string>Count Sites Per Region</string>
    </property>
    <property name="shortcut">
     <string>0</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionToggleInvert">
    <property name="checkable">
     <bool>true</bool>
@@ -510,15 +510,15 @@
     <string>Save EPS</string>
    </property>
   </action>
-  <action name="actionBreak_Regularity">
+  <!--<action name="actionBreak_Regularity">
    <property name="text">
     <string>Break Regularity</string>
    </property>
    <property name="shortcut">
     <string>Shift+R</string>
    </property>
-  </action>
-  <action name="actionViewRegularSites">
+  </action>-->
+  <!--<action name="actionViewRegularSites">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -528,7 +528,7 @@
    <property name="shortcut">
     <string>Alt+R</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionComputeInterpolation">
    <property name="text">
     <string>Compute Interpolation</string>
@@ -537,11 +537,11 @@
     <string>Ctrl+I</string>
    </property>
   </action>
-  <action name="actionVoronoiCreation">
+  <!--<action name="actionVoronoiCreation">
    <property name="text">
     <string>Generate Voronoi</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionOpenSourceDAT">
    <property name="text">
     <string>Load Source DAT</string>
@@ -568,16 +568,16 @@
     <string>Centroid To Site</string>
    </property>
   </action>
-  <action name="actionLoadWeights">
+  <!--<action name="actionLoadWeights">
    <property name="text">
     <string>Load Weights</string>
    </property>
-  </action>
-  <action name="actionLoadSingularities">
+  </action>-->
+  <!--<action name="actionLoadSingularities">
    <property name="text">
     <string>Load Singularities</string>
    </property>
-  </action>
+  </action>-->
   <action name="actionViewGradient">
    <property name="checkable">
     <bool>true</bool>
