@@ -10,7 +10,7 @@
 
 typedef CLSWeights<Scene, FT> LSWeights;
 
-typedef CLSPositions<Scene, Point, Vector> LSPositions;
+//typedef CLSPositions<Scene, Point, Vector> LSPositions;
 
 FT Scene::optimize_positions_via_lloyd(bool update)
 {
@@ -33,7 +33,7 @@ FT Scene::optimize_positions_via_lloyd(bool update)
     return compute_norm(gradient);
 }
 
-FT Scene::optimize_positions_via_gradient_ascent(FT timestep, bool update)
+/*FT Scene::optimize_positions_via_gradient_ascent(FT timestep, bool update)
 {
     std::vector<Point> points;
     collect_visible_points(points);
@@ -60,9 +60,9 @@ FT Scene::optimize_positions_via_gradient_ascent(FT timestep, bool update)
     
     compute_position_gradient(gradient);
     return compute_norm(gradient);
-}
+}*/
 
-FT Scene::optimize_weights_via_gradient_descent(FT timestep, bool update)
+/*FT Scene::optimize_weights_via_gradient_descent(FT timestep, bool update)
 {
     std::vector<FT> gradient;
     compute_weight_gradient(gradient, -1.0);
@@ -87,9 +87,9 @@ FT Scene::optimize_weights_via_gradient_descent(FT timestep, bool update)
 
     compute_weight_gradient(gradient);
     return compute_norm(gradient);
-}
+}*/
 
-FT Scene::optimize_weights_via_newton(FT timestep, bool update)
+/*FT Scene::optimize_weights_via_newton(FT timestep, bool update)
 {
     std::vector<FT> gradient;
     compute_weight_gradient(gradient, -1.0);
@@ -118,9 +118,9 @@ FT Scene::optimize_weights_via_newton(FT timestep, bool update)
     
     compute_weight_gradient(gradient);
     return compute_norm(gradient);
-}
+}*/
 
-bool Scene::solve_newton_step(const std::vector<FT>& b, std::vector<FT>& x)
+/*bool Scene::solve_newton_step(const std::vector<FT>& b, std::vector<FT>& x)
 {
     if (m_timer_on) Timer::start_timer(m_timer, COLOR_BLUE, "LinearSolver");
 
@@ -145,9 +145,9 @@ bool Scene::solve_newton_step(const std::vector<FT>& b, std::vector<FT>& x)
 
     if (m_timer_on) Timer::stop_timer(m_timer, COLOR_BLUE);
     return true;
-}
+}*/
 
-void Scene::build_laplacian(const FT scale,
+/*void Scene::build_laplacian(const FT scale,
                             const std::map<unsigned, unsigned>& indices,
                             SparseMatrix& A) const
 {
@@ -183,9 +183,9 @@ void Scene::build_laplacian(const FT scale,
         rowi.setValue(i, diagi);
         A.setRow(i, rowi);
     }
-}
+}*/
 
-bool Scene::solve_linear_system(const SparseMatrix& A,
+/*bool Scene::solve_linear_system(const SparseMatrix& A,
                                 std::vector<double>& x,
                                 const std::vector<double>& b) const
 {
@@ -195,9 +195,9 @@ bool Scene::solve_linear_system(const SparseMatrix& A,
     
     ok = solver.solve(b, x);
     return ok;
-}
+}*/
 
-unsigned Scene::optimize_weights_via_gradient_descent_until_converge(FT timestep, 
+/*unsigned Scene::optimize_weights_via_gradient_descent_until_converge(FT timestep, 
                                                                      FT threshold,
                                                                      unsigned update,
                                                                      unsigned max_iters)
@@ -209,9 +209,9 @@ unsigned Scene::optimize_weights_via_gradient_descent_until_converge(FT timestep
         if (norm < threshold) return i;
     }
     return max_iters;
-}
+}*/
 
-unsigned Scene::optimize_weights_via_newton_until_converge(FT timestep, 
+/*unsigned Scene::optimize_weights_via_newton_until_converge(FT timestep, 
                                                            FT threshold,
                                                            unsigned update,
                                                            unsigned max_iters)
@@ -223,9 +223,9 @@ unsigned Scene::optimize_weights_via_newton_until_converge(FT timestep,
         if (norm < threshold) return i;
     }
     return max_iters;
-}
+}*/
 
-unsigned Scene::optimize_all(FT wstep, FT xstep, unsigned max_newton_iters,
+/*unsigned Scene::optimize_all(FT wstep, FT xstep, unsigned max_newton_iters,
                              FT epsilon, unsigned max_iters,
                              std::ostream& out)
 {
@@ -280,4 +280,4 @@ unsigned Scene::optimize_all(FT wstep, FT xstep, unsigned max_newton_iters,
     
     m_fixed_connectivity = global_connectivity;
     return iters;
-}
+}*/

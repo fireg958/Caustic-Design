@@ -7,7 +7,7 @@
 
 // local
 #include "ui_caustic.h"
-#include "voronoi_creation.h"
+//#include "voronoi_creation.h"
 
 
 class Scene;
@@ -89,8 +89,8 @@ protected slots:
     void on_actionSavePoints_triggered();
     void on_actionSaveEPS_triggered();
     void on_actionSaveSourceDAT_triggered();
-    void on_actionLoadWeights_triggered();
-    void on_actionLoadSingularities_triggered();
+    //void on_actionLoadWeights_triggered();
+    //void on_actionLoadSingularities_triggered();
         
     // view
     void on_actionViewImage_toggled();
@@ -105,38 +105,38 @@ protected slots:
     void on_actionViewPixels_toggled();
     void on_actionViewCapacity_toggled();
     void on_actionViewVariance_toggled();
-    void on_actionViewRegularity_toggled();
-    void on_actionViewRegularSites_toggled();
+    //void on_actionViewRegularity_toggled();
+    //void on_actionViewRegularSites_toggled();
     void on_actionViewBarycenter_toggled();
     void on_actionDrawMovement_toggled();
     void on_actionViewBoundedDual_toggled();
-    void on_actionViewWeightHistogram_toggled();
-    void on_actionViewCapacityHistogram_toggled();
+    //void on_actionViewWeightHistogram_toggled();
+    //void on_actionViewCapacityHistogram_toggled();
     void on_actionViewGradient_toggled();
     void on_actionViewPopups_toggled();
     
     // data
     void on_actionToggleInvert_toggled();
-    void on_actionGenerateVariablePoints_triggered();
+    //void on_actionGenerateVariablePoints_triggered();
     
     // algorithm
     void on_actionSetParameters_triggered();
-    void on_actionResetWeights_triggered();
-    void on_actionOptimizePointsGD_triggered();
-    void on_actionOptimizePointsLloyd_triggered();
-    void on_actionOptimizeWeightsGD_triggered();
-    void on_actionOptimizeWeightsNewton_triggered();
-    void on_actionOptimizeWeightsGDUntil_triggered();
-    void on_actionOptimizeWeightsNewtonUntil_triggered();
-    void on_actionFullOptimization_triggered();
-    void on_actionCountSitesPerBin_triggered();
-    void on_actionBreak_Regularity_triggered();
+    //void on_actionResetWeights_triggered();
+    //void on_actionOptimizePointsGD_triggered();
+    //void on_actionOptimizePointsLloyd_triggered();
+    //void on_actionOptimizeWeightsGD_triggered();
+    //void on_actionOptimizeWeightsNewton_triggered();
+    //void on_actionOptimizeWeightsGDUntil_triggered();
+    //void on_actionOptimizeWeightsNewtonUntil_triggered();
+    //void on_actionFullOptimization_triggered();
+    //void on_actionCountSitesPerBin_triggered();
+    //void on_actionBreak_Regularity_triggered();
 
     void on_actionToggleTimer_toggled();
-    void on_actionToggleFixedConnectivity_toggled();
+    //void on_actionToggleFixedConnectivity_toggled();
     void on_actionComputeInterpolation_triggered();
     void on_actionCalculateOptimalTransport_triggered();
-    void on_actionVoronoiCreation_triggered();
+    //void on_actionVoronoiCreation_triggered();
     
 signals:
     void openRecentFile(QString filename, bool open_target);

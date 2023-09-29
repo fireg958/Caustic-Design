@@ -1,23 +1,23 @@
 #include "scene.h"
 #include "timer.h"
 
-FT Scene::compute_weight_threshold(FT epsilon) const
+/*FT Scene::compute_weight_threshold(FT epsilon) const
 {
     // reference: 1e-4 for 1000 sites
     FT A = compute_value_integral();
     unsigned N = count_visible_sites();
     return  (0.1*epsilon) * (A) / FT(N);
-}
+}*/
 
-FT Scene::compute_position_threshold(FT epsilon) const
+/*FT Scene::compute_position_threshold(FT epsilon) const
 {
     // reference: 1e-4 for 1000 sites
     FT A = compute_value_integral();
     unsigned N = count_visible_sites();
     return (0.1*epsilon) * (std::sqrt(A*A*A)) / FT(N);
-}
+}*/
 
-FT Scene::compute_wcvt_energy()
+/*FT Scene::compute_wcvt_energy()
 {
     if (m_timer_on) Timer::start_timer(m_timer, COLOR_BLUE, "Energy");
 
@@ -38,9 +38,9 @@ FT Scene::compute_wcvt_energy()
     if (m_timer_on) Timer::stop_timer(m_timer, COLOR_BLUE);
 
     return (w_dot_V - cvt);
-}
+}*/
 
-void Scene::compute_weight_gradient(std::vector<FT>& gradient, FT coef)
+/*void Scene::compute_weight_gradient(std::vector<FT>& gradient, FT coef)
 {
     if (m_timer_on) Timer::start_timer(m_timer, COLOR_BLUE, "WGrad");
     
@@ -57,7 +57,7 @@ void Scene::compute_weight_gradient(std::vector<FT>& gradient, FT coef)
     }
     
     if (m_timer_on) Timer::stop_timer(m_timer, COLOR_BLUE);
-}
+}*/
 
 void Scene::compute_position_gradient(std::vector<Vector>& gradient, FT coef)
 {

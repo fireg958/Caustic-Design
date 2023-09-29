@@ -22,13 +22,14 @@ GlViewer::GlViewer(QWidget *pParent)
     m_view_dual = false;
     m_view_capacity = false;
     m_view_variance = false;
-    m_view_regularity = false;
-    m_view_regular_sites = false;
+    m_view_movement = false;
+    //m_view_regularity = false;
+    //m_view_regular_sites = false;
     m_view_pixels = false;
     m_view_barycenter = false;
     m_view_bounded_dual = true;
-    m_view_weight_histogram = false;
-    m_view_capacity_histogram = false;
+    //m_view_weight_histogram = false;
+    //m_view_capacity_histogram = false;
     m_view_newly_visible = true;
     m_view_gradient = true;
 
@@ -36,8 +37,8 @@ GlViewer::GlViewer(QWidget *pParent)
     m_point_size = 2.0;
     m_vertex_size = 3.0;
     
-    m_histogram_range = 1.0;
-    m_histogram_nbins = 512;
+    //m_histogram_range = 1.0;
+    //m_histogram_nbins = 512;
     
     m_scale = 0.5;
     m_center_x = 0.;
@@ -104,11 +105,11 @@ void GlViewer::paintGL()
     if (m_view_capacity)
         m_scene->draw_capacity();
     
-    if (m_view_regularity)
-        m_scene->draw_regularity();
+    /*if (m_view_regularity)
+        m_scene->draw_regularity();*/
     
-    if (m_view_regular_sites)
-        m_scene->draw_regular_sites();
+    /*if (m_view_regular_sites)
+        m_scene->draw_regular_sites();*/
 
     if (m_view_pixels)
         m_scene->draw_pixels();
@@ -152,7 +153,7 @@ void GlViewer::paintGL()
     glPopMatrix();
     
     // histograms
-    glPushMatrix();
+    /*glPushMatrix();
     glLoadIdentity();
     
     if (m_view_capacity_histogram)
@@ -163,7 +164,7 @@ void GlViewer::paintGL()
                                        histogram_nbins(),
                                        -0.8, 0.8, -0.5, 0.3);
     
-    glPopMatrix();
+    glPopMatrix();*/
 }
 
 void GlViewer::wheelEvent(QWheelEvent *event) 

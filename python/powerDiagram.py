@@ -29,6 +29,8 @@ from scipy.spatial import ConvexHull
 
 from matplotlib.collections import LineCollection,PolyCollection
 from matplotlib import pyplot as plot
+from matplotlib import pyplot as animation
+from matplotlib.animation import FuncAnimation
 
 # --- Misc. geometry code -----------------------------------------------------
 
@@ -54,7 +56,7 @@ def is_ccw_triangle(A, B, C):
 
 def get_power_triangulation(S, R):
     # Compute the lifted weighted points
-    S_norm = np.sum(S ** 2, axis = 1) - R*0.1
+    S_norm = np.sum(S ** 2, axis = 1) - R
     S_lifted = np.concatenate([S, S_norm[:,None]], axis = 1)
 
     # Special case for 3 points
@@ -184,7 +186,7 @@ def display(S, R, tri_list, voronoi_cell_map):
     ax.add_collection(line_list)
 
     # Job done
-    plot.show()
+    #plot.show()
 
 def get_weighted_centroid(A, U, tmin, tmax):
     tmid = (tmin + tmax) / 2.0
@@ -197,8 +199,8 @@ def is_infinite_triangle(tri):
 
 def main():
     # Load your points and weights
-    points_file = "/home/dylan/vae2-source.dat"
-    weight_file = "/home/dylan/vae2.weight"
+    points_file = "/home/dylan/blenders_logo_100k_circle.dat"
+    weight_file = "/home/dylan/blenders_logo_100k_circle.weight"
 
     # Load points
     with open(points_file, "r") as f:
@@ -214,36 +216,51 @@ def main():
         weight_data = f.read().splitlines()
     R = np.array(list(map(float, weight_data)))
 
-    # Compute the power triangulation of the circles
-    tri_list, V = get_power_triangulation(S, R)
+    def animate_voronoi(i):
+        # Compute the power triangulation of the circles
+        tri_list, V = get_power_triangulation(S, R*(i/10))
 
-    # Compute the Voronoi cells
-    voronoi_cell_map = get_voronoi_cells(S, V, tri_list)
+        # Compute the Voronoi cells
+        voronoi_cell_map = get_voronoi_cells(S, V, tri_list)
 
-    # Display the result
-    display(S, R, tri_list, voronoi_cell_map)
+        # Display the result
+        display(S, R, tri_list, voronoi_cell_map)
+
+        print('frame')
+
+    # Create the figure and axis
+    fig, ax = plot.subplots()
+
+    # Create the animation
+    anim = FuncAnimation(fig, animate_voronoi,
+                                frames=10, interval=200, blit=True)
+
+    anim.save('animation.gif', writer='imagemagick', fps=60)
+
+    # Display the animation
+    plot.show()
 
     # Compute and export the weighted centroid of each Voronoi cell
-    output_file = "voronoi_centroids.dat"
-    with open(output_file, "w") as f:
-        for point, segment_list in voronoi_cell_map.items():
-            weighted_centroid = np.zeros(2)
-            total_weight = 0.0
-            for _, (A, U, tmin, tmax) in segment_list:
-                if tmin is None:
-                    tmin = -10
-                if tmax is None:
-                    tmax = 10
-                segment_centroid = get_weighted_centroid(A, U, tmin, tmax)
-                segment_weight = abs(tmax - tmin)
-                weighted_centroid += segment_centroid * segment_weight
-                total_weight += segment_weight
-            weighted_centroid /= total_weight
-            x, y = weighted_centroid
+    #output_file = "voronoi_centroids.dat"
+    #with open(output_file, "w") as f:
+    #    for point, segment_list in voronoi_cell_map.items():
+    #        weighted_centroid = np.zeros(2)
+    #        total_weight = 0.0
+    #        for _, (A, U, tmin, tmax) in segment_list:
+    #            if tmin is None:
+    #                tmin = -10
+    #            if tmax is None:
+    #                tmax = 10
+    #            segment_centroid = get_weighted_centroid(A, U, tmin, tmax)
+    #            segment_weight = abs(tmax - tmin)
+    #            weighted_centroid += segment_centroid * segment_weight
+    #            total_weight += segment_weight
+    #        weighted_centroid /= total_weight
+    #        x, y = weighted_centroid
             
             # Exclude centroids from infinite triangles
             #if not any(is_infinite_triangle(tri) for tri in tri_list if point in tri):
-            f.write(f"{x} {y}\n")
+    #        f.write(f"{x} {y}\n")
 
 if __name__ == '__main__':
     main()

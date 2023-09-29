@@ -18,24 +18,24 @@
  *   void update_scene(const std::vector<Position>& X);
  */
  
-template <class Position, class Velocity>
+/*template <class Position, class Velocity>
 class CLineSearch
 {
-protected:
+protected:*/
     /* parameters */
-    unsigned m_max_iters;
+    /*unsigned m_max_iters;
     double m_max_alpha;
     double m_c1;
     double m_c2;
-    double m_c3;
+    double m_c3;*/
     
     /* initial configuration */
-    std::vector<Position> m_x0;
+    /*std::vector<Position> m_x0;
     std::vector<Velocity> m_v0;
     double m_grad_phi0;
-    double m_phi0;
+    double m_phi0;*/
     
-public:
+/*public:
     CLineSearch(const unsigned max_iters,
                 const double max_alpha,
                 const double c1 = 1e-4,
@@ -47,9 +47,9 @@ public:
         m_c1 = c1;
         m_c2 = c2;
         m_c3 = c3;
-    }
+    }*/
 
-    double run_bt(const std::vector<Position>& x0, 
+    /*double run_bt(const std::vector<Position>& x0, 
                   const std::vector<Velocity>& v0)
     {
         m_x0 = x0;
@@ -59,9 +59,9 @@ public:
         double step = back_tracking();
         // reset_position(); // FIXME: comment to speed up code
         return step;
-    }
+    }*/
     
-    double run_wc(const std::vector<Position>& x0, 
+    /*double run_wc(const std::vector<Position>& x0, 
                               const std::vector<Velocity>& v0)
     {
         m_x0 = x0;
@@ -71,10 +71,10 @@ public:
         double step = line_search_with_strong_wolfe_conditions();
         reset_position();
         return step;
-    }
+    }*/
     
-protected:
-    double back_tracking()
+//protected:
+    /*double back_tracking()
     {
         double lower_alpha = 0.0;
         double upper_alpha = m_max_alpha;        
@@ -95,9 +95,9 @@ protected:
             upper_alpha = alpha;
         }
         return lower_alpha;
-    }
+    }*/
     
-    double line_search_with_strong_wolfe_conditions()
+    /*double line_search_with_strong_wolfe_conditions()
     {
         double lower_alpha = 0.0;
         double upper_alpha = m_max_alpha;
@@ -150,9 +150,9 @@ protected:
         
         //std::cout << "search failed" << std::endl;
         return lower_alpha;
-    }
+    }*/
     
-    double zoom(double lower_alpha, double upper_alpha, double lower_phi)
+    /*double zoom(double lower_alpha, double upper_alpha, double lower_phi)
     {
         if (std::abs(upper_alpha - lower_alpha) < m_c3)
             return lower_alpha;
@@ -195,19 +195,19 @@ protected:
         lower_phi = phi;
         lower_alpha = alpha;
         return zoom(lower_alpha, upper_alpha, lower_phi);
-    }
+    }*/
     
-    double pick_alpha(const double lower, const double upper) const
+    /*double pick_alpha(const double lower, const double upper) const
     {
         return 0.5*(lower + upper);
-    }
+    }*/
     
-    void reset_position()
+    /*void reset_position()
     {
         move_position(0.0);
-    }
+    }*/
     
-    bool move_position(const double alpha)
+    /*bool move_position(const double alpha)
     {
         std::vector<Position> X;
         for (unsigned i = 0; i < m_x0.size(); ++i)
@@ -216,30 +216,30 @@ protected:
             X.push_back(pi);
         }
         return update_scene(X);
-    }
+    }*/
 
-    double evaluate_function() const
+    /*double evaluate_function() const
     {
         return compute_function();
-    }
+    }*/
 
-    double evaluate_gradient() const
+    /*double evaluate_gradient() const
     {
         std::vector<Velocity> V;
         compute_gradient(V);
         
         /* V * m_v0 */
-        double sum = 0.0;
+        /*double sum = 0.0;
         for (unsigned i = 0; i < m_v0.size(); ++i)
             sum += V[i] * m_v0[i];
         return sum;
-    }
+    }*/
 
-    virtual double compute_function() const = 0;
+    //virtual double compute_function() const = 0;
 
-    virtual void compute_gradient(std::vector<Velocity>& V) const = 0;
+    //virtual void compute_gradient(std::vector<Velocity>& V) const = 0;
 
-    virtual bool update_scene(const std::vector<Position>& X) = 0;
-};
+    //virtual bool update_scene(const std::vector<Position>& X) = 0;
+//};
 
 #endif

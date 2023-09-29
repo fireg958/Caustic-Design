@@ -7,7 +7,7 @@
 // CWCWeights //
 //------------//
 
-template <class Scene, class T>
+/*template <class Scene, class T>
 class CLSWeights : public CLineSearch<T, T>
 {
 protected:
@@ -22,19 +22,19 @@ public:
     {
         m_scene = scene;
         m_nb = m_scene->count_visible_sites();
-    }
+    }*/
     
-    double compute_function() const
+    /*double compute_function() const
     {
         return m_scene->compute_wcvt_energy();
-    }
+    }*/
     
-    void compute_gradient(std::vector<T>& V) const
+    /*void compute_gradient(std::vector<T>& V) const
     {
         m_scene->compute_weight_gradient(V);
-    }
+    }*/
     
-    bool update_scene(const std::vector<T>& X)
+    /*bool update_scene(const std::vector<T>& X)
     {
         if (m_scene->connectivity_fixed())
         {
@@ -46,21 +46,21 @@ public:
         m_scene->update_weights(X, false);
         return m_scene->update_triangulation(true);
         //return has_same_vertices();
-    }
+    }*/
     
-    bool has_same_vertices() const
+    /*bool has_same_vertices() const
     {
         unsigned nb = m_scene->count_visible_sites();
         if (nb != m_nb) std::cout << "HiddenVertices: " << m_nb << " -> " << nb << std::endl;
         return (nb == m_nb);
-    }
-};
+    }*/
+//};
 
 //-------------//
 // CWCPosition //
 //-------------//
 
-template <class Scene, class Position, class Velocity>
+/*template <class Scene, class Position, class Velocity>
 class CLSPositions : public CLineSearch<Position, Velocity>
 {
 protected:
@@ -75,19 +75,19 @@ public:
     {
         m_scene = scene;
         m_nb = m_scene->count_visible_sites();
-    }
+    }*/
     
-    double compute_function() const
+    /*double compute_function() const
     {
         return ( - m_scene->compute_wcvt_energy() );
-    }
+    }*/
     
-    void compute_gradient(std::vector<Velocity>& V) const
+    /*void compute_gradient(std::vector<Velocity>& V) const
     {
         m_scene->compute_position_gradient(V, -1.0);
-    }
+    }*/
     
-    bool update_scene(const std::vector<Position>& X)
+    /*bool update_scene(const std::vector<Position>& X)
     {
         if (m_scene->connectivity_fixed())
         {
@@ -99,14 +99,14 @@ public:
         m_scene->update_positions(X, true, false);
         return m_scene->update_triangulation(true);
         //return has_same_vertices();
-    }
+    }*/
     
-    bool has_same_vertices() const
+    /*bool has_same_vertices() const
     {
         unsigned nb = m_scene->count_visible_sites();
         if (nb != m_nb) std::cout << "HiddenVertices: " << m_nb << " -> " << nb << std::endl;
         return (nb == m_nb);
-    }
-};
+    }*/
+//};
 
 #endif

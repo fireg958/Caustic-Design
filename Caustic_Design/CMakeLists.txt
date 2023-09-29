@@ -64,7 +64,7 @@ set ( Caustic_Design_HDRS
 	util.h
 	interpolation.h
 	optimal_transport.h
-	voronoi_creation.h
+	#voronoi_creation.h
 	gradientdescent.h
 	)
 
@@ -74,18 +74,18 @@ set ( Caustic_Design_SRCS
 	assign.cpp
 	energy.cpp
 	glviewer.cpp
-	histogram.cpp
+	#histogram.cpp
 	init.cpp
 	io.cpp
 	main.cpp
-	optimizer.cpp
-	regularity.cpp
+	#optimizer.cpp
+	#regularity.cpp
 	render.cpp
 	sites.cpp
 	window.cpp
 	interpolation.cpp
 	optimal_transport.cpp
-	voronoi_creation.cpp
+	#voronoi_creation.cpp
 	gradientdescent.cpp
 	)
 

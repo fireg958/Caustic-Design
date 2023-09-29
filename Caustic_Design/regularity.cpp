@@ -1,13 +1,13 @@
 #include "scene.h"
 #include "random.h"
 
-FT Scene::compute_regularity_threshold() const
+/*FT Scene::compute_regularity_threshold() const
 {
     FT m = compute_mean_capacity();
     return m_tau*0.25*m*m;
-}
+}*/
 
-void Scene::detect_and_break_regularity(FT max_radius, unsigned max_teleport)
+/*void Scene::detect_and_break_regularity(FT max_radius, unsigned max_teleport)
 {
     FT threshold = compute_regularity_threshold();
     FT m = compute_mean_capacity();
@@ -77,9 +77,9 @@ void Scene::detect_and_break_regularity(FT max_radius, unsigned max_teleport)
     std::cout << max_teleport << " vertices teleported" << std::endl;
     
     reset_weights(); // it calls update
-}
+}*/
 
-FT Scene::compute_max_regularity() const
+/*FT Scene::compute_max_regularity() const
 {
     std::vector<FT> variance;
     compute_variance_vector(variance);
@@ -91,9 +91,9 @@ FT Scene::compute_max_regularity() const
     for (unsigned i = 0; i < regularity.size(); ++i)
         max_value = std::max(max_value, regularity[i]);
     return max_value;
-}
+}*/
 
-void Scene::compute_variance_vector(std::vector<FT>& variance) const
+/*void Scene::compute_variance_vector(std::vector<FT>& variance) const
 {
     for (unsigned i = 0; i < m_vertices.size(); ++i)
     {
@@ -102,9 +102,9 @@ void Scene::compute_variance_vector(std::vector<FT>& variance) const
         if (!vertex->is_hidden()) V = vertex->compute_variance();
         variance.push_back(V);
     }
-}
+}*/
 
-void Scene::compute_regularity_vector(const std::vector<FT>& variance,
+/*void Scene::compute_regularity_vector(const std::vector<FT>& variance,
                                       std::vector<FT>& regularity) const
 {
     // regularity = normalized absolute deviation
@@ -116,9 +116,9 @@ void Scene::compute_regularity_vector(const std::vector<FT>& variance,
         if (!vertex->is_hidden()) R = compute_regularity(vertex, variance);
         regularity.push_back(R/C);
     }
-}
+}*/
 
-FT Scene::compute_regularity(Vertex_handle vi, const std::vector<FT>& variance) const
+/*FT Scene::compute_regularity(Vertex_handle vi, const std::vector<FT>& variance) const
 {
     FT deviation = 0.0;
     unsigned degree = 0;
@@ -134,9 +134,9 @@ FT Scene::compute_regularity(Vertex_handle vi, const std::vector<FT>& variance) 
         degree++;
     }
     return (deviation / degree);
-}
+}*/
 
-void Scene::jitter_vertices(const std::set<Vertex_handle>& vertices, const FT max_radius)
+/*void Scene::jitter_vertices(const std::set<Vertex_handle>& vertices, const FT max_radius)
 {
     for (std::set<Vertex_handle>::const_iterator it = vertices.begin(); it != vertices.end(); ++it)
     {
@@ -145,17 +145,17 @@ void Scene::jitter_vertices(const std::set<Vertex_handle>& vertices, const FT ma
         p = jitter_point(p, max_radius);
         vertex->set_position(p);
     }
-}
+}*/
 
-Point Scene::jitter_point(const Point& p, const FT max_radius) const
+/*Point Scene::jitter_point(const Point& p, const FT max_radius) const
 {
     FT angle = random_double(0.0, 2.0*M_PI);
     FT radius = random_double(0.0, max_radius);
     Vector d(radius*cos(angle), radius*sin(angle));
     return m_domain.clamp(p + d);
-}
+}*/
 
-void Scene::count_sites_per_bin(unsigned N) const
+/*void Scene::count_sites_per_bin(unsigned N) const
 {
     std::vector<FT> bin(N);
     FT xmin = -m_domain.get_dx();
@@ -237,4 +237,4 @@ void Scene::count_sites_per_bin(unsigned N) const
     for (unsigned k = 0; k < N; ++k)
         std::cout << nb_pixel[k] << " ; ";
     std::cout << std::endl;
-}
+}*/

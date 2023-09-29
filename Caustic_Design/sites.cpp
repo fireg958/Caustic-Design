@@ -5,7 +5,7 @@ Scene::Scene(const Scene& sc){
     srand(0);
     m_tau = 1.0;
     m_timer_on = false;
-    m_fixed_connectivity = false;
+    //m_fixed_connectivity = false;
     m_rt = sc.m_rt;
     m_domain = sc.m_domain;
     m_capacities = sc.m_capacities;
@@ -19,7 +19,7 @@ Scene* Scene::operator=(const Scene& sc){
     srand(0);
     m_tau = 1.0;
     m_timer_on = false;
-    m_fixed_connectivity = false;
+    //m_fixed_connectivity = false;
     m_rt = sc.m_rt;
     m_domain = sc.m_domain;
     m_capacities = sc.m_capacities;
@@ -29,7 +29,7 @@ Scene* Scene::operator=(const Scene& sc){
     m_vertices= sc.m_vertices;
 }
 
-void Scene::generate_random_sites(const unsigned nb)
+/*void Scene::generate_random_sites(const unsigned nb)
 {
     if (!m_domain.is_valid()) return;
     std::vector<Point> points;
@@ -44,7 +44,7 @@ void Scene::generate_random_sites(const unsigned nb)
     std::vector<FT> weights(points.size(), 0.0);
     construct_triangulation(points, weights);
     init_colors(points.size());
-}
+}*/
 
 void Scene::generate_random_sites_based_on_image(const unsigned nb)
 {
@@ -67,7 +67,7 @@ void Scene::generate_random_sites_based_on_image(const unsigned nb)
     init_colors(points.size());
 }
 
-void Scene::generate_regular_grid(const unsigned nx, const unsigned ny)
+/*void Scene::generate_regular_grid(const unsigned nx, const unsigned ny)
 {
     if (!m_domain.is_valid()) return;
     FT stepx = 2.0 * m_domain.get_dx() / nx;
@@ -87,7 +87,7 @@ void Scene::generate_regular_grid(const unsigned nx, const unsigned ny)
     std::vector<FT> weights(points.size(), 0.0);
     construct_triangulation(points, weights);
     init_colors(points.size());
-}
+}*/
 
 void Scene::init_colors(const unsigned nb)
 {
@@ -102,7 +102,7 @@ void Scene::init_colors(const unsigned nb)
     }
 }
 
-std::vector<Vertex_handle> Scene::find_neighbors(Vertex_handle vi){
+/*std::vector<Vertex_handle> Scene::find_neighbors(Vertex_handle vi){
         std::vector<Vertex_handle> neighbors;
         Edge_circulator ecirc = m_rt.incident_edges(vi);
         Edge_circulator eend  = ecirc;
@@ -118,10 +118,10 @@ std::vector<Vertex_handle> Scene::find_neighbors(Vertex_handle vi){
             }
 
         return neighbors;
-}
+}*/
 
 
-int Scene::findIndexVerticeBySite (Vertex_handle vi){
+/*int Scene::findIndexVerticeBySite (Vertex_handle vi){
     int i;
     //Point ci = vi->compute_centroid();
     Point ci = vi->get_position();
@@ -133,9 +133,9 @@ int Scene::findIndexVerticeBySite (Vertex_handle vi){
             return i;
     }
     return -1;
-}
+}*/
 
-int Scene::findIndexVerticeByCentroid (Vertex_handle vi){
+/*int Scene::findIndexVerticeByCentroid (Vertex_handle vi){
     int i;
     Point ci = vi->compute_centroid();
     Point cn;
@@ -146,9 +146,9 @@ int Scene::findIndexVerticeByCentroid (Vertex_handle vi){
             return i;
     }
     return -1;
-}
+}*/
 
-int Scene::findIndexByPoint(Point & p)
+/*int Scene::findIndexByPoint(Point & p)
 {
 
     for(uint i=0; i < m_vertices.size(); i++)
@@ -158,4 +158,4 @@ int Scene::findIndexByPoint(Point & p)
     }
 
     return -1;
-}
+}*/

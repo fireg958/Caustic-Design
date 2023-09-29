@@ -116,13 +116,13 @@ bool Scene::construct_triangulation(const std::vector<Point>& points,
     return (ok || !skip);
 }
 
-void Scene::update_triangulation_values()
+/*void Scene::update_triangulation_values()
 {
     pre_build_dual_cells();
     assign_pixels();
     assign_singularites();
     pre_compute_area();
-}
+}*/
 
 bool Scene::populate_vertices(const std::vector<Point>& points,
                               const std::vector<FT>& weights)
@@ -175,7 +175,7 @@ Vertex_handle Scene::insert_vertex(const Point& point,
     return vertex;
 }
 
-void Scene::delete_vertex(Vertex_handle vd)
+/*void Scene::delete_vertex(Vertex_handle vd)
 {
     int i= -1;
     i=findIndexVerticeBySite(vd);
@@ -186,7 +186,7 @@ void Scene::delete_vertex(Vertex_handle vd)
     //int i=findIndexVertice(vd);
     //m_vertices.erase(m_vertices.begin()+i);
 
-}
+}*/
 
 FT Scene::compute_mean_capacity() const
 {

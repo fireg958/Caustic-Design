@@ -16,7 +16,7 @@
 #include "window.h"
 #include "dialog.h"
 #include "scene.h"
-#include "voronoi_creation.h"
+//#include "voronoi_creation.h"
 #include "optimal_transport.h"
 #include "interpolation.h"
 #include "config.h"
@@ -34,7 +34,7 @@ MainWindow::MainWindow() : QMainWindow(), Ui_MainWindow(), maxNumRecentFiles(15)
 
     viewer_2->set_scene(source_scene);
 
-    voronoicreator= new VoronoiCreator(m_scene);
+    //voronoicreator= new VoronoiCreator(m_scene);
     
     m_verbose = 1;
     m_stepX = 0.0;
@@ -215,7 +215,7 @@ void MainWindow::on_actionClear_triggered()
 	update();
 }
 
-void MainWindow::on_actionLoadWeights_triggered()
+/*void MainWindow::on_actionLoadWeights_triggered()
 {
     QString fileName =
     QFileDialog::getOpenFileName(this, tr("Open Weights"), ".");
@@ -226,9 +226,9 @@ void MainWindow::on_actionLoadWeights_triggered()
     m_scene->update_triangulation();
     QApplication::restoreOverrideCursor();
     update();
-}
+}*/
 
-void MainWindow::on_actionLoadSingularities_triggered()
+/*void MainWindow::on_actionLoadSingularities_triggered()
 {
     QString fileName =
             QFileDialog::getOpenFileName(this, tr("Open Singularities"), ".");
@@ -242,7 +242,7 @@ void MainWindow::on_actionLoadSingularities_triggered()
     m_scene->update_singularities(ps, cs);
     QApplication::restoreOverrideCursor();
     update();
-}
+}*/
 
 void MainWindow::on_actionOpenImage_triggered()
 {
@@ -318,7 +318,7 @@ void MainWindow::on_actionSnapshot_triggered()
 // ALGORITHM //
 ///////////////
 
-void MainWindow::on_actionResetWeights_triggered()
+/*void MainWindow::on_actionResetWeights_triggered()
 {
     if (!m_scene->is_valid()) return;
     Timer::start_timer(m_timer, COLOR_GREEN, "reset W");
@@ -330,9 +330,9 @@ void MainWindow::on_actionResetWeights_triggered()
     
     Timer::stop_timer(m_timer, COLOR_GREEN);
 	update();    
-}
+}*/
 
-void MainWindow::on_actionOptimizePointsLloyd_triggered()
+/*void MainWindow::on_actionOptimizePointsLloyd_triggered()
 {
     if (!m_scene->is_valid()) return;
     
@@ -362,9 +362,9 @@ void MainWindow::on_actionOptimizePointsLloyd_triggered()
         std::cout << "Norm: " << norm << std::endl;
         if (n0 != n1) std::cout << red << "Visible: " << n0 << " -> " << n1 << white << std::endl;
     }    
-}
+}*/
 
-void MainWindow::on_actionOptimizePointsGD_triggered()
+/*void MainWindow::on_actionOptimizePointsGD_triggered()
 {
     if (!m_scene->is_valid()) return;
 
@@ -394,9 +394,9 @@ void MainWindow::on_actionOptimizePointsGD_triggered()
         std::cout << "Norm: " << norm << std::endl;
         if (n0 != n1) std::cout << red << "Visible: " << n0 << " -> " << n1 << white << std::endl;
     }
-}
+}*/
 
-void MainWindow::on_actionOptimizeWeightsGD_triggered()
+/*void MainWindow::on_actionOptimizeWeightsGD_triggered()
 {
     if (!m_scene->is_valid()) return;
 
@@ -425,9 +425,9 @@ void MainWindow::on_actionOptimizeWeightsGD_triggered()
         std::cout << "DE: " << E1-E0 << " (" << (E0 > E1) << ")" << std::endl;
         if (n0 != n1) std::cout << red << "Visible: " << n0 << " -> " << n1 << white << std::endl;
     }
-}
+}*/
 
-void MainWindow::on_actionOptimizeWeightsNewton_triggered()
+/*void MainWindow::on_actionOptimizeWeightsNewton_triggered()
 {
     if (!m_scene->is_valid()) return;
     
@@ -457,9 +457,9 @@ void MainWindow::on_actionOptimizeWeightsNewton_triggered()
         std::cout << "DE: " << E1-E0 << " (" << (E0 > E1) << ")" << std::endl;
         if (n0 != n1) std::cout << red << "Visible: " << n0 << " -> " << n1 << white << std::endl;
     }
-}
+}*/
 
-void MainWindow::on_actionOptimizeWeightsGDUntil_triggered()
+/*void MainWindow::on_actionOptimizeWeightsGDUntil_triggered()
 {
     if (!m_scene->is_valid()) return;
     
@@ -493,9 +493,9 @@ void MainWindow::on_actionOptimizeWeightsGDUntil_triggered()
         std::cout << "DE: " << E1-E0 << " (" << (E0 > E1) << ")" << std::endl;
         if (n0 != n1) std::cout << red << "Visible: " << n0 << " -> " << n1 << white << std::endl;
     }
-}
+}*/
 
-void MainWindow::on_actionOptimizeWeightsNewtonUntil_triggered()
+/*void MainWindow::on_actionOptimizeWeightsNewtonUntil_triggered()
 {
     if (!m_scene->is_valid()) return;
     
@@ -529,9 +529,9 @@ void MainWindow::on_actionOptimizeWeightsNewtonUntil_triggered()
         std::cout << "DE: " << E1-E0 << " (" << (E0 > E1) << ")" << std::endl;
         if (n0 != n1) std::cout << red << "Visible: " << n0 << " -> " << n1 << white << std::endl;
     }
-}
+}*/
 
-void MainWindow::on_actionFullOptimization_triggered()
+/*void MainWindow::on_actionFullOptimization_triggered()
 {
     if (!m_scene->is_valid()) return;
     Timer::start_timer(m_timer, COLOR_RED, "full opt");
@@ -546,9 +546,9 @@ void MainWindow::on_actionFullOptimization_triggered()
     std::cout << "Iters: " << iters << " (" << max_iters() << ")" << std::endl;
     Timer::stop_timer(m_timer, COLOR_RED);
 	update();    
-}
+}*/
 
-void MainWindow::on_actionBreak_Regularity_triggered()
+/*void MainWindow::on_actionBreak_Regularity_triggered()
 {
     bool ok;
     double radius = QInputDialog::getDouble(this, tr("Radius"), tr("radius:"), 
@@ -569,7 +569,7 @@ void MainWindow::on_actionBreak_Regularity_triggered()
     
     Timer::stop_timer(m_timer, COLOR_BLUE);
     update();
-}
+}*/
 
 //////////
 // DATA //
@@ -581,7 +581,7 @@ void MainWindow::on_actionToggleInvert_toggled()
     update();
 }
 
-void MainWindow::on_actionGenerateVariablePoints_triggered()
+/*void MainWindow::on_actionGenerateVariablePoints_triggered()
 {
 	bool ok;
         int nb = QInputDialog::getInt(this, tr("Nb Sites"), tr("n:"), 1024, 3, 1500000, 1, &ok);
@@ -595,7 +595,7 @@ void MainWindow::on_actionGenerateVariablePoints_triggered()
     update();
 
     std::cout << "Insert " << m_scene->count_visible_sites() << " sites adapted to image" << std::endl;
-}
+}*/
 
 //////////
 // VIEW //
@@ -685,19 +685,19 @@ void MainWindow::on_actionViewCapacity_toggled()
     update();
 }
 
-void MainWindow::on_actionViewRegularity_toggled()
+/*void MainWindow::on_actionViewRegularity_toggled()
 {
     viewer->toggle_view_regularity();
     viewer_2->toggle_view_regularity();
     update();
-}
+}*/
 
-void MainWindow::on_actionViewRegularSites_toggled()
+/*void MainWindow::on_actionViewRegularSites_toggled()
 {
     viewer->toggle_view_regular_sites();
     viewer_2->toggle_view_regular_sites();
     update();
-}
+}*/
 
 void MainWindow::on_actionViewVariance_toggled()
 {
@@ -720,19 +720,19 @@ void MainWindow::on_actionDrawMovement_toggled()
     update();
 }
 
-void MainWindow::on_actionViewWeightHistogram_toggled()
+/*void MainWindow::on_actionViewWeightHistogram_toggled()
 {
     viewer->toggle_view_weight_histogram();
     viewer_2->toggle_view_weight_histogram();
     update();
-}
+}*/
 
-void MainWindow::on_actionViewCapacityHistogram_toggled()
+/*void MainWindow::on_actionViewCapacityHistogram_toggled()
 {
     viewer->toggle_view_capacity_histogram();
     viewer_2->toggle_view_capacity_histogram();
     update();
-}
+}*/
 
 void MainWindow::on_actionViewGradient_toggled()
 {
@@ -762,8 +762,8 @@ void MainWindow::on_actionSetParameters_triggered()
     dlg.set_point_size(viewer->point_size());
     dlg.set_vertex_size(viewer->vertex_size());
     dlg.set_line_thickness(viewer->line_thickness());
-    dlg.set_hist_range(viewer->histogram_range());
-    dlg.set_hist_nbins(viewer->histogram_nbins());
+    //dlg.set_hist_range(viewer->histogram_range());
+    //dlg.set_hist_nbins(viewer->histogram_nbins());
     dlg.set_tau(m_scene->get_tau());
     dlg.set_site_amount(m_site_amount);
     dlg.set_level_max(m_level_max);
@@ -779,8 +779,8 @@ void MainWindow::on_actionSetParameters_triggered()
         viewer->point_size()  = dlg.get_point_size();
         viewer->vertex_size() = dlg.get_vertex_size();
         viewer->line_thickness() = dlg.get_line_thickness();
-        viewer->histogram_range() = dlg.get_hist_range();
-        viewer->histogram_nbins() = dlg.get_hist_nbins();
+        //viewer->histogram_range() = dlg.get_hist_range();
+        //viewer->histogram_nbins() = dlg.get_hist_nbins();
         m_scene->set_tau(dlg.get_tau());
         m_level_max = dlg.get_level_max();
         m_site_amount = dlg.get_site_amount();
@@ -793,20 +793,20 @@ void MainWindow::on_actionToggleTimer_toggled()
     m_scene->toggle_timer();
 }
 
-void MainWindow::on_actionToggleFixedConnectivity_toggled()
+/*void MainWindow::on_actionToggleFixedConnectivity_toggled()
 {
     m_scene->toggle_connectivity();
-}
+}*/
 
-void MainWindow::on_actionCountSitesPerBin_triggered()
+/*void MainWindow::on_actionCountSitesPerBin_triggered()
 {
     bool ok;
     int nb = QInputDialog::getInt(this, tr("NbBins"), tr("bins:"), 6, 1, 100, 1, &ok);
     if (!ok) return;
     m_scene->count_sites_per_bin(nb);
-}
+}*/
 
-void MainWindow::on_actionVoronoiCreation_triggered(){
+/*void MainWindow::on_actionVoronoiCreation_triggered(){
     bool ok;
     nbpoints = QInputDialog::getInt(this, tr("NBpoint"), tr("Number of voronoi Centroids:"), 20, 20, 200000, 100, &ok);
     if (!ok) return;
@@ -822,9 +822,9 @@ void MainWindow::on_actionVoronoiCreation_triggered(){
         voronoicreator->apply_lloyd_optimization(compute_scene);
     }*/
 
-    if(voronoicreator->generate_voronoi(m_scene, nbpoints, epsilon(), viewer))
+    /*if(voronoicreator->generate_voronoi(m_scene, nbpoints, epsilon(), viewer))
         this->on_actionSavePoints_triggered();
-}
+}*/
 
 void MainWindow::on_actionComputeInterpolation_triggered(){
     QString image = QFileDialog::getOpenFileName(this, tr("Open image"), ".");
@@ -836,16 +836,21 @@ void MainWindow::on_actionComputeInterpolation_triggered(){
     source_scene->load_points(dats);
     m_scene->load_points(dats);
     compute_scene->load_points(dats);
-    on_actionLoadWeights_triggered();
+    
+    // load weights
+    QString weights_file = QFileDialog::getOpenFileName(this, tr("Open Weights"), ".");
+    if(weights_file.isEmpty()) return;
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    std::vector<FT> weights = m_scene->load_weights(weights_file);
+    m_scene->update_weights(weights, false);
+    m_scene->update_triangulation();
+    QApplication::restoreOverrideCursor();
+    update();
 
-
-
-     QString fileName = QFileDialog::getOpenFileName(this, tr("Load light origin points"), ".");
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Load light origin points"), ".");
     if (fileName.isEmpty()) return;
     source_scene->load_dat(fileName,source_scene->getLightPointsSource());
     std::cout << "light points source size" << source_scene->getLightPointsSource().size() << std::endl;
-
-
 
     std::cout << "onActionComputeInterpolation" << std::endl;
     QApplication::setOverrideCursor(Qt::WaitCursor);

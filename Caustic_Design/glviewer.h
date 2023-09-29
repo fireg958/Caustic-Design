@@ -30,13 +30,13 @@ private:
     bool m_view_pixels;
     bool m_view_capacity;
     bool m_view_variance;
-    bool m_view_regularity;
-    bool m_view_regular_sites;
+    //bool m_view_regularity;
+    //bool m_view_regular_sites;
     bool m_view_barycenter;
     bool m_view_movement;
     bool m_view_bounded_dual;
-    bool m_view_weight_histogram;
-    bool m_view_capacity_histogram;
+    //bool m_view_weight_histogram;
+    //bool m_view_capacity_histogram;
     bool m_view_Xrs;
     bool m_view_Xr;
     bool m_view_newly_visible;
@@ -48,8 +48,8 @@ private:
     double m_vertex_size;
     
     // histogram
-    double m_histogram_range;
-    unsigned m_histogram_nbins;
+    //double m_histogram_range;
+    //unsigned m_histogram_nbins;
     
     // camera
     double m_scale;
@@ -83,11 +83,11 @@ public:
     double& vertex_size() { return m_vertex_size; }
     const double& vertex_size() const { return m_vertex_size; }
     
-    double& histogram_range() { return m_histogram_range; }
-    const double histogram_range() const { return m_histogram_range; }
+    //double& histogram_range() { return m_histogram_range; }
+    //const double histogram_range() const { return m_histogram_range; }
 
-    unsigned& histogram_nbins() { return m_histogram_nbins; }
-    const unsigned histogram_nbins() const { return m_histogram_nbins; }
+    //unsigned& histogram_nbins() { return m_histogram_nbins; }
+    //const unsigned histogram_nbins() const { return m_histogram_nbins; }
 
     // toggles
     void toggle_view_image() { m_view_image = !m_view_image; }
@@ -114,9 +114,9 @@ public:
     
     void toggle_view_variance() { m_view_variance = !m_view_variance; }
 
-    void toggle_view_regularity() { m_view_regularity = !m_view_regularity; }
+    //void toggle_view_regularity() { m_view_regularity = !m_view_regularity; }
     
-    void toggle_view_regular_sites() { m_view_regular_sites = !m_view_regular_sites; }
+    //void toggle_view_regular_sites() { m_view_regular_sites = !m_view_regular_sites; }
 
     void toggle_view_barycenter() { m_view_barycenter = !m_view_barycenter; }
 
@@ -124,9 +124,9 @@ public:
 
     void toggle_view_bounded_dual() { m_view_bounded_dual = !m_view_bounded_dual; }
     
-    void toggle_view_weight_histogram() { m_view_weight_histogram = !m_view_weight_histogram; }
+    //void toggle_view_weight_histogram() { m_view_weight_histogram = !m_view_weight_histogram; }
     
-    void toggle_view_capacity_histogram() { m_view_capacity_histogram = !m_view_capacity_histogram; }
+    //void toggle_view_capacity_histogram() { m_view_capacity_histogram = !m_view_capacity_histogram; }
 
     void toggle_view_Xrs() {m_view_Xrs = !m_view_Xrs; }
 

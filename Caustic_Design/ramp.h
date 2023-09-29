@@ -120,12 +120,12 @@ public:
         rebuild();
     }
     
-    void build_thermal_foliated()
+    /*void build_thermal_foliated()
     {
         build_thermal();
         foliate();
         rebuild();
-    }
+    }*/
     
     void foliate()
     {
@@ -141,7 +141,7 @@ public:
         }
     }
     
-    void build_rainbow()
+    /*void build_rainbow()
     {
         reset();
         add_node(0,0,0,0);
@@ -154,7 +154,7 @@ public:
         add_node(240,128,0,0);
         add_node(255,255,255,255);
         rebuild();
-    }
+    }*/
 };
 
 #endif

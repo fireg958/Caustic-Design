@@ -10,7 +10,7 @@
 #include "window.h"
 #include "domain.h"
 #include "random.h"
-#include "voronoi_creation.h"
+//#include "voronoi_creation.h"
 #include "glviewer.h"
 
 class OptimalTransport
@@ -102,6 +102,9 @@ public:
     void update_visibility();
     void load_original_image();
 
+    bool generate_voronoi(Scene* sc, unsigned npoints, double epsilon, GlViewer* viewer=NULL);
+    void init_points(int npoints, Scene* sc);
+
 private:
 
     std::vector<Vertex_handle> current_source_vertices;
@@ -126,6 +129,7 @@ private:
 
     double image_scale_factor;
 
+    FT compute_position_threshold(FT epsilon);
 
 };
 

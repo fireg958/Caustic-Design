@@ -1,6 +1,6 @@
 #include "scene.h"
 
-void Scene::compute_capacity_histogram(std::vector<unsigned>& histogram) const
+/*void Scene::compute_capacity_histogram(std::vector<unsigned>& histogram) const
 {
     unsigned nsites = count_visible_sites();
     if (nsites == 0) return;
@@ -20,9 +20,9 @@ void Scene::compute_capacity_histogram(std::vector<unsigned>& histogram) const
         unsigned bin = unsigned(ceil(value*(nbins-1)));
         histogram[bin]++;
     }
-}
+}*/
 
-void Scene::compute_weight_histogram(const double, 
+/*void Scene::compute_weight_histogram(const double, 
                                      std::vector<unsigned>& histogram) const
 {
     unsigned nsites = count_visible_sites();
@@ -57,7 +57,7 @@ void Scene::compute_weight_histogram(const double,
     std::cout << "Weights\%: " << min_w/avg_len2 << " ; " << max_w/avg_len2 << std::endl;
     */
     
-    unsigned nbins = histogram.size();
+    /*unsigned nbins = histogram.size();
     for (unsigned i = 0; i < weights.size(); ++i)
     {
         FT value = (weights[i] - min_w) / range_w;
@@ -66,4 +66,4 @@ void Scene::compute_weight_histogram(const double,
         unsigned bin = unsigned(ceil(value*(nbins-1)));
         histogram[bin]++;
     }
-}
+}*/

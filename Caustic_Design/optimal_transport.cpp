@@ -415,7 +415,7 @@ bool OptimalTransport::prepare_data()
 
     std::cout << "scenes available.. ";
 
-    VoronoiCreator voronoi_creator;// = VoronoiCreator();
+    //VoronoiCreator voronoi_creator;// = VoronoiCreator();
     QString source_image = source_scene->getDomain().get_filename();
 
     scaled_scenes = new Scene*[level_max];
@@ -430,16 +430,16 @@ bool OptimalTransport::prepare_data()
 
 #ifdef LIVE_DEMO
         source_viewer->set_scene(scaled_scenes[i]);
-        voronoi_creator.generate_voronoi(scaled_scenes[i], scene_sites, EPSILON, source_viewer);
+        generate_voronoi(scaled_scenes[i], scene_sites, EPSILON, source_viewer);
 #else
-        voronoi_creator.generate_voronoi(scaled_scenes[i], scene_sites, EPSILON, NULL);
+        generate_voronoi(scaled_scenes[i], scene_sites, EPSILON, NULL);
 #endif
 
-        //voronoi_creator.init_points(scene_sites, scaled_scenes[i]);
+        //init_points(scene_sites, scaled_scenes[i]);
 
         /*for(int j=0; j<10; j++)
         {
-            voronoi_creator.apply_lloyd_optimization(scaled_scenes[i]);
+            apply_lloyd_optimization(scaled_scenes[i]);
 #ifdef LIVE_DEMO
             win->update();
 #endif
@@ -488,6 +488,84 @@ bool OptimalTransport::prepare_data()
     std::cout << std::endl;
     // --- no issue found
     return true;*/
+}
+
+FT OptimalTransport::compute_position_threshold(FT epsilon)
+{
+    // reference: 1e-4 for 1000 sites
+    FT A = m_scene->compute_value_integral();
+    unsigned N = m_scene->count_visible_sites();
+    return (0.1*epsilon) * (std::sqrt(A*A*A)) / FT(N);
+}
+
+bool OptimalTransport::generate_voronoi(Scene *sc, unsigned npoints, double epsilon, GlViewer* viewer)
+{
+    // --- initialize the voronoi diagram
+    init_points(npoints, sc);
+
+    FT threshold = compute_position_threshold(epsilon);
+    bool success = false;
+    unsigned iter = 0;
+    unsigned max_iter = 200;
+
+    if(viewer != NULL)
+        viewer->repaint();
+
+    std::cout << "optimizing voronoi diagram via lloyd ..";
+    // optimize until the movement is below a certain threshold
+    while(iter++ < LLYOD_STEPS){
+        std::cout << iter << " ..";
+
+        // norm is the norm of the position gradient
+        // ( a metric for how far the centroid is away from the site after the optimzation step )
+        FT norm = sc->optimize_positions_via_lloyd(true);
+
+        if(viewer != NULL)
+            viewer->repaint();
+
+        if(norm < threshold)
+        {
+            success = true;
+            break;
+        }
+    }
+
+    std::cout << std::endl;
+
+    if(success)
+        std::cout << "voronoi diagram created with " << iter << " optimization steps" << std::endl;
+    else
+        std::cerr << "voronoi could not be optimized" << std::endl;
+
+    return success;
+}
+
+void OptimalTransport::init_points(int npoints,Scene* sc){
+    std::cout << "initializing " << npoints << " points...";
+    std::cout << std::flush;
+    sc->generate_random_sites_based_on_image(npoints);
+    std::cout << "done" << std::endl;
+}
+
+FT Scene::optimize_positions_via_lloyd(bool update)
+{
+    if (m_timer_on) Timer::start_timer(m_timer, COLOR_BLUE, "Centroid");
+    std::vector<Point> points;
+    for (unsigned i = 0; i < m_vertices.size(); ++i)
+    {
+        Vertex_handle vi = m_vertices[i];        
+        if (vi->is_hidden()) continue;
+        Point ci = vi->compute_centroid();
+        points.push_back(ci);
+    }
+    if (m_timer_on) Timer::stop_timer(m_timer, COLOR_BLUE);
+
+    update_positions(points);
+    if (update) update_triangulation();
+    
+    std::vector<Vector> gradient;
+    compute_position_gradient(gradient);
+    return compute_norm(gradient);
 }
 
 void OptimalTransport::prepare_level_data(lbfgsfloatval_t *initial_weights, unsigned n)

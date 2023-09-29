@@ -437,7 +437,7 @@ void Scene::draw_capacity() const
     }
 }
 
-void Scene::draw_regularity() const
+/*void Scene::draw_regularity() const
 {
     std::vector<FT> variance;
     compute_variance_vector(variance);
@@ -460,9 +460,9 @@ void Scene::draw_regularity() const
         ramp.gl_color(value, max_value);
         draw_cell(vi, true);
     }
-}
+}*/
 
-void Scene::draw_regular_sites() const
+/*void Scene::draw_regular_sites() const
 {
     std::vector<FT> variance;
     compute_variance_vector(variance);
@@ -481,7 +481,7 @@ void Scene::draw_regular_sites() const
         glColor3d(0.7, 0.2, 0.2);
         draw_cell(vi, true);
     }
-}
+}*/
 
 void Scene::draw_variance() const
 {
@@ -522,7 +522,7 @@ void Scene::draw_cell(Vertex_handle vertex, bool filled) const
     draw_polygon(polygon);
 }
 
-void Scene::draw_capacity_histogram(const unsigned nbins, 
+/*void Scene::draw_capacity_histogram(const unsigned nbins, 
                                     const double xmin,
                                     const double xmax,
                                     const double ymin,
@@ -531,9 +531,9 @@ void Scene::draw_capacity_histogram(const unsigned nbins,
     std::vector<unsigned> histogram(nbins, 0);
     compute_capacity_histogram(histogram);
     draw_histogram(histogram, xmin, xmax, ymin, ymax);
-}
+}*/
     
-void Scene::draw_weight_histogram(const double range,
+/*void Scene::draw_weight_histogram(const double range,
                                   const unsigned nbins, 
                                   const double xmin,
                                   const double xmax,
@@ -543,9 +543,9 @@ void Scene::draw_weight_histogram(const double range,
     std::vector<unsigned> histogram(nbins, 0);
     compute_weight_histogram(range, histogram);
     draw_histogram(histogram, xmin, xmax, ymin, ymax);    
-}
+}*/
 
-void Scene::draw_histogram(const std::vector<unsigned>& histogram, 
+/*void Scene::draw_histogram(const std::vector<unsigned>& histogram, 
                            const double xmin,
                            const double xmax,
                            const double ymin,
@@ -588,7 +588,7 @@ void Scene::draw_histogram(const std::vector<unsigned>& histogram,
         glVertex2d(x0, y1);
         glEnd();
     }
-}
+}*/
 
 void Scene::draw_Xrs(){
     int i;
