@@ -9,13 +9,13 @@
     return  (0.1*epsilon) * (A) / FT(N);
 }*/
 
-/*FT Scene::compute_position_threshold(FT epsilon) const
+FT Scene::compute_position_threshold(FT epsilon) const
 {
     // reference: 1e-4 for 1000 sites
     FT A = compute_value_integral();
     unsigned N = count_visible_sites();
     return (0.1*epsilon) * (std::sqrt(A*A*A)) / FT(N);
-}*/
+}
 
 /*FT Scene::compute_wcvt_energy()
 {

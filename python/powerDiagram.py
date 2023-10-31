@@ -149,45 +149,6 @@ def get_voronoi_cells(S, V, tri_list):
 
 
 # --- Plot all the things -----------------------------------------------------
-
-def display(S, R, tri_list, voronoi_cell_map):
-    # Setup
-    fig, ax = plot.subplots()
-    plot.axis('equal')
-    plot.axis('off')    
-
-    # Set min/max display size, as Matplotlib does it wrong
-    min_corner = np.amin(S, axis = 0) - np.max(R)
-    max_corner = np.amax(S, axis = 0) + np.max(R)
-    plot.xlim((min_corner[0], max_corner[0]))
-    plot.ylim((min_corner[1], max_corner[1]))
-
-    # Plot the power triangulation
-    #edge_set = frozenset(tuple(sorted(edge)) for tri in tri_list for edge in itertools.combinations(tri, 2))
-    #line_list = LineCollection([(S[i], S[j]) for i, j in edge_set], lw = 1., colors = '.9')
-    #line_list.set_zorder(0)
-    #ax.add_collection(line_list)
-
-    # Plot the Voronoi cells
-    edge_map = { }
-    for segment_list in voronoi_cell_map.values():
-        for edge, (A, U, tmin, tmax) in segment_list:
-            edge = tuple(sorted(edge))
-            if edge not in edge_map:
-                if tmax is None:
-                    tmax = 10
-                if tmin is None:
-                    tmin = -10
-
-                edge_map[edge] = (A + tmin * U, A + tmax * U)
-
-    line_list = LineCollection(edge_map.values(), lw = 1., colors = 'k')
-    line_list.set_zorder(0)
-    ax.add_collection(line_list)
-
-    # Job done
-    #plot.show()
-
 def get_weighted_centroid(A, U, tmin, tmax):
     tmid = (tmin + tmax) / 2.0
     return A + tmid * U
@@ -199,8 +160,8 @@ def is_infinite_triangle(tri):
 
 def main():
     # Load your points and weights
-    points_file = "/home/dylan/blenders_logo_100k_circle.dat"
-    weight_file = "/home/dylan/blenders_logo_100k_circle.weight"
+    points_file = "/home/dylan/blenders_full_1500_square.dat"
+    weight_file = "/home/dylan/blenders_full_1500_square.weight"
 
     # Load points
     with open(points_file, "r") as f:
@@ -218,24 +179,66 @@ def main():
 
     def animate_voronoi(i):
         # Compute the power triangulation of the circles
-        tri_list, V = get_power_triangulation(S, R*(i/10))
+        tri_list, V = get_power_triangulation(S, R*(i/100))
 
         # Compute the Voronoi cells
         voronoi_cell_map = get_voronoi_cells(S, V, tri_list)
 
-        # Display the result
-        display(S, R, tri_list, voronoi_cell_map)
+        plot.cla()  # Clear the previous frame
 
-        print('frame')
+        # Setup
+        plot.axis('equal')
+        plot.axis('off')    
+
+        # Set min/max display size, as Matplotlib does it wrong
+        min_corner = np.amin(S, axis = 0) - np.max(R)
+        max_corner = np.amax(S, axis = 0) + np.max(R)
+        plot.xlim((min_corner[0], max_corner[0]))
+        plot.ylim((min_corner[1], max_corner[1]))
+
+        # Plot the power triangulation
+        #edge_set = frozenset(tuple(sorted(edge)) for tri in tri_list for edge in itertools.combinations(tri, 2))
+        #line_list = LineCollection([(S[i], S[j]) for i, j in edge_set], lw = 1., colors = '.9')
+        #line_list.set_zorder(0)
+        #ax.add_collection(line_list)
+
+        # Plot the Voronoi cells
+        edge_map = { }
+        for segment_list in voronoi_cell_map.values():
+            for edge, (A, U, tmin, tmax) in segment_list:
+                edge = tuple(sorted(edge))
+                if edge not in edge_map:
+                    if tmax is None:
+                        tmax = 10
+                    if tmin is None:
+                        tmin = -10
+
+                    edge_map[edge] = (A + tmin * U, A + tmax * U)
+
+        line_list = LineCollection(edge_map.values(), lw = 1., colors = 'k')
+        line_list.set_zorder(0)
+        ax.add_collection(line_list)
+
+        #plot.scatter(V[:,0], V[:,1], s=1)
+
+        # Job done
+        #plot.show()
+        print("frame " + str(i))
+
 
     # Create the figure and axis
     fig, ax = plot.subplots()
 
+    fig.set_size_inches(10, 10, True)
+    dpi = 50
+
+
     # Create the animation
     anim = FuncAnimation(fig, animate_voronoi,
-                                frames=10, interval=200, blit=True)
+                                frames=100, interval=4000/50, blit=True)
 
-    anim.save('animation.gif', writer='imagemagick', fps=60)
+    anim.save('animation2.gif', writer='imagemagick', fps=25, dpi=dpi)
+
 
     # Display the animation
     plot.show()

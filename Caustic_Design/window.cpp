@@ -699,12 +699,12 @@ void MainWindow::on_actionViewCapacity_toggled()
     update();
 }*/
 
-void MainWindow::on_actionViewVariance_toggled()
+/*void MainWindow::on_actionViewVariance_toggled()
 {
     viewer->toggle_view_variance();
     viewer_2->toggle_view_variance();
     update();
-}
+}*/
 
 void MainWindow::on_actionViewBarycenter_toggled()
 {

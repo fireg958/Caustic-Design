@@ -104,7 +104,7 @@ protected slots:
     void on_actionViewDual_toggled();
     void on_actionViewPixels_toggled();
     void on_actionViewCapacity_toggled();
-    void on_actionViewVariance_toggled();
+    //void on_actionViewVariance_toggled();
     //void on_actionViewRegularity_toggled();
     //void on_actionViewRegularSites_toggled();
     void on_actionViewBarycenter_toggled();

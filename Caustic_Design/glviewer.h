@@ -29,7 +29,7 @@ private:
     bool m_view_dual;
     bool m_view_pixels;
     bool m_view_capacity;
-    bool m_view_variance;
+    //bool m_view_variance;
     //bool m_view_regularity;
     //bool m_view_regular_sites;
     bool m_view_barycenter;
@@ -112,7 +112,7 @@ public:
     
     void toggle_view_capacity() { m_view_capacity = !m_view_capacity; }
     
-    void toggle_view_variance() { m_view_variance = !m_view_variance; }
+    //void toggle_view_variance() { m_view_variance = !m_view_variance; }
 
     //void toggle_view_regularity() { m_view_regularity = !m_view_regularity; }
     

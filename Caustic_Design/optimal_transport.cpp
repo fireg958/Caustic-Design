@@ -490,31 +490,33 @@ bool OptimalTransport::prepare_data()
     return true;*/
 }
 
-FT OptimalTransport::compute_position_threshold(FT epsilon)
+/*FT OptimalTransport::compute_position_threshold(FT epsilon)
 {
     // reference: 1e-4 for 1000 sites
     FT A = m_scene->compute_value_integral();
+    std::cout << "value integral: " << A << std::endl;
     unsigned N = m_scene->count_visible_sites();
+    std::cout << "visible sites: " << N << std::endl;
     return (0.1*epsilon) * (std::sqrt(A*A*A)) / FT(N);
-}
+}*/
 
 bool OptimalTransport::generate_voronoi(Scene *sc, unsigned npoints, double epsilon, GlViewer* viewer)
 {
+    bool success = false;
+    unsigned iter = 0;
+
     // --- initialize the voronoi diagram
     init_points(npoints, sc);
 
-    FT threshold = compute_position_threshold(epsilon);
-    bool success = false;
-    unsigned iter = 0;
-    unsigned max_iter = 200;
+    FT threshold = sc->compute_position_threshold(epsilon);
 
     if(viewer != NULL)
         viewer->repaint();
 
+    std::cout << "position treshold: " << threshold << std::endl;
     std::cout << "optimizing voronoi diagram via lloyd ..";
     // optimize until the movement is below a certain threshold
-    while(iter++ < LLYOD_STEPS){
-        std::cout << iter << " ..";
+    while (iter++ < LLOYD_STEPS) {
 
         // norm is the norm of the position gradient
         // ( a metric for how far the centroid is away from the site after the optimzation step )
@@ -528,6 +530,8 @@ bool OptimalTransport::generate_voronoi(Scene *sc, unsigned npoints, double epsi
             success = true;
             break;
         }
+
+        std::cout << "iteration = " << iter << ", norm = " << norm << std::endl;
     }
 
     std::cout << std::endl;

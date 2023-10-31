@@ -117,7 +117,7 @@
     <addaction name="separator"/>
     <addaction name="actionViewPixels"/>
     <addaction name="actionViewCapacity"/>
-    <addaction name="actionViewVariance"/>
+    <!--<addaction name="actionViewVariance"/>-->
     <addaction name="separator"/>
     <!--<addaction name="actionViewCapacityHistogram"/>-->
     <!--<addaction name="actionViewWeightHistogram"/>-->
@@ -346,7 +346,7 @@
     <string>Shift+Z</string>
    </property>
   </action>-->
-  <action name="actionViewVariance">
+  <!--<action name="actionViewVariance">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -356,7 +356,8 @@
    <property name="shortcut">
     <string>U</string>
    </property>
-  </action>
+  </action>-->
+
   <action name="actionViewFaces">
    <property name="checkable">
     <bool>true</bool>

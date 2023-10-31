@@ -483,7 +483,7 @@ void Scene::draw_capacity() const
     }
 }*/
 
-void Scene::draw_variance() const
+/*void Scene::draw_variance() const
 {
     FT max_variance = 0.0;
     std::vector<FT> values;
@@ -508,7 +508,7 @@ void Scene::draw_variance() const
         ramp.gl_color(variance, max_variance);
         draw_cell(vi, true);
     }
-}
+}*/
 
 void Scene::draw_cell(Vertex_handle vertex, bool filled) const
 {

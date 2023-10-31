@@ -273,21 +273,30 @@ void TargetOptimization::runOptimization(Model* m, Renderer* renderer){
     model = m;
     Mesh * mesh = &model->meshes[0];
 
+    std::cout << "0" << std::endl;
+
     // make a copy of the original positions of the vertices
     for (int i = 0; i < mesh->faceVerticesEdge.size(); i++) {
         glm::vec3 v = mesh->faceVerticesEdge[i]->Position;
         x_sources.push_back(v);
     }
 
+    std::cout << "1" << std::endl;
 
     vector<vector<int> > neighborsPerVertex;
     neighborsPerVertex.resize(mesh->faceVerticesEdge.size());
 
+    std::cout << "2" << std::endl;
+
     vector<vector<int> > neighborMapPerVertex;
     neighborMapPerVertex.resize(mesh->faceVerticesEdge.size());
 
+    std::cout << "3" << std::endl;
+
     vector<vector<int> > eightNeighborsPerVertex;
     eightNeighborsPerVertex.resize(mesh->faceVerticesEdge.size());
+
+    std::cout << "4" << std::endl;
 
     // gather information for each vertex to optimize
     for(uint i = 0; i < mesh->faceVerticesEdge.size(); i++)
@@ -304,10 +313,14 @@ void TargetOptimization::runOptimization(Model* m, Renderer* renderer){
         eightNeighborsPerVertex[i] = eightNeighbors;
     }
 
+    std::cout << "5" << std::endl;
+
     // prepare model and mesh
     mesh->calculateVertexNormals();
     model->computeLightDirectionsScreenSurface();
     model->fresnelMapping();
+
+    std::cout << "6" << std::endl;
 
     // optimize until converged or maximum step amount reached
     for(uint loop = 0; loop < 10; loop++)

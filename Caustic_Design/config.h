@@ -3,8 +3,8 @@
     /*Voronoi Generation*/
     //int SITE_AMOUNT = 20;
     #define SITE_AMOUNT 500
-    #define EPSILON 0.5
-    #define LLYOD_STEPS 20
+    #define EPSILON 0.1
+    #define LLOYD_STEPS 200
 
     /*Optimal Transport*/
     //#define LEVEL_MAX 6

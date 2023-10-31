@@ -198,7 +198,7 @@ public:
 
     void draw_capacity() const;
     
-    void draw_variance() const;
+    //void draw_variance() const;
     
     //void draw_regularity() const;
     
@@ -300,7 +300,7 @@ public:
     
     //FT compute_weight_threshold(FT epsilon) const;
     
-    //FT compute_position_threshold(FT epsilon) const;
+    FT compute_position_threshold(FT epsilon) const;
 
     // OPTIMIZER //
     

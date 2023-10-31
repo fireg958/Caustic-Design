@@ -21,7 +21,7 @@ GlViewer::GlViewer(QWidget *pParent)
     m_view_weights = false;
     m_view_dual = false;
     m_view_capacity = false;
-    m_view_variance = false;
+    //m_view_variance = false;
     m_view_movement = false;
     //m_view_regularity = false;
     //m_view_regular_sites = false;
@@ -99,8 +99,8 @@ void GlViewer::paintGL()
     if(m_view_newly_visible)
         m_scene->draw_new_visibility();
 
-    if (m_view_variance)
-        m_scene->draw_variance();
+    /*if (m_view_variance)
+        m_scene->draw_variance();*/
     
     if (m_view_capacity)
         m_scene->draw_capacity();

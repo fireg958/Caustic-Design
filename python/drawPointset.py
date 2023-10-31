@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # Read the pointset data from the file
-filename = 'voronoi_centroids.dat'
+filename = '/home/dylan/lena.dat'
 with open(filename, 'r') as file:
     lines = file.readlines()
 
