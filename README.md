@@ -143,7 +143,7 @@ the steps to compute the optimal transport are as follows:
 
 In our case we dither the the input distribution using lloyd iterations on a power diagram with weights equal to 0 (regular voronoi diagram). The output of this descretization is then fed into the solver that finds the disired weights. 
 
-when the solver finishes, we have a point set and a set of weights. When we construct the power diagram with the calculated weights, we get our target distribution, and if we construct the power diagram of the same points with weights equal to 0, we get our input distribution. This is our optimal transport mapping.
+when the solver finishes, we have a set of weights for the given point dithered point set. When we construct the power diagram with the calculated weights, we get our target distribution, and if we construct the power diagram of the same points with weights equal to 0, we get our input distribution. This is our optimal transport mapping.
 
 ### Encoding the optimal transport on a surface
 TODO
