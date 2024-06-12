@@ -477,10 +477,11 @@ void Mesh::exportVertices(const QString& filename, float scaling){
     std::ofstream ofs(qPrintable(filename));
     ofs.precision(20);
     vector<Vertex*> verticesMesh = faceVertices;
-    int exported = 0, excluded = 0;
+    std::cout<<"[exporting] "<<std::endl<<"CAUSTIC_DOMAIN="<<CAUSTIC_DOMAIN<<std::endl<<"scaling="<<scaling<<std::endl;
     for (unsigned i = 0; i < verticesMesh.size(); ++i)
     {
         // don't export vertices on the edge
+        std::cout<<verticesMesh[i]->Position.y<< " " <<verticesMesh[i]->Position.z<<std::endl;
         ofs << verticesMesh[i]->Position.y * CAUSTIC_DOMAIN / scaling << " " << verticesMesh[i]->Position.z  * CAUSTIC_DOMAIN / scaling << std::endl;
 
     }
